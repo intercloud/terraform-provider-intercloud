@@ -1,6 +1,6 @@
 TEST?=./...
 PKG_NAME?=intercloud
-PROVIDER_VERSION?=dev
+PROVIDER_VERSION?=1.0.0-beta
 WEBSITE_REPO=github.com/hashicorp/terraform-website
 
 default: run-dev
@@ -121,9 +121,7 @@ ifeq (,$(wildcard $(GOPATH)/src/$(WEBSITE_REPO)))
 endif
 	@$(MAKE) -C $(GOPATH)/src/$(WEBSITE_REPO) website-provider-test PROVIDER_PATH=$(shell pwd) PROVIDER_NAME=$(PKG_NAME)
 
-
-# make release version=1.0.0 
-# make release version=1.0.0 prerelease=beta
+# PROVIDER_VERSION=1.0.0-beta make release
 release: clean
 	sed -i "-e" -e 's/Version = ".*"/Version = "$(PROVIDER_VERSION)"/g' -e 's/Prerelease = ".*"/Prerelease = "$(PRERELEASE)"/g' ./version/version.go
 	gox -output ./bin/{{.OS}}_{{.Arch}}/terraform-provider-intercloud_v$(PROVIDER_VERSION)$(if $(PRERELEASE),-$(PRERELEASE),)

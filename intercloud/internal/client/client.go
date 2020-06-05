@@ -107,7 +107,7 @@ type AzureParams struct {
 }
 
 type GcpParams struct {
-	Med            int    `json:"med"`
+	Med            uint64 `json:"med"`
 	Bandwidth      string `json:"bandwidth"`
 	PairingKey     string `json:"pairingKey"`
 	InterconnectID string `json:"interconnectId,omitempty"`

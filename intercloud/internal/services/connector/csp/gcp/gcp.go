@@ -8,7 +8,7 @@ import (
 )
 
 // GcpMed maps human readable values (low, high) to int values
-var GcpMed = map[string]int{"low": 2147483648, "high": 5000}
+var GcpMed = map[string]uint64{"low": 2147483648, "high": 5000}
 
 func ResourceSchemaGcp() *schema.Resource {
 
@@ -65,7 +65,7 @@ func ResourceSchemaGcp() *schema.Resource {
 
 // HumanMedToInt converts a human readable med (low, high) to its int value.
 // When the human readable value is unknown, the equivalent int value for "low" is returned
-func HumanMedToInt(med string) int {
+func HumanMedToInt(med string) uint64 {
 	if val, ok := GcpMed[strings.ToLower(med)]; ok {
 		return val
 	}
@@ -75,7 +75,7 @@ func HumanMedToInt(med string) int {
 
 // IntMedToHuman converts an integer med value to its human readable equivalent.
 // When the int value is unknown, the "low" human readable value is returned
-func IntMedToHuman(med int) string {
+func IntMedToHuman(med uint64) string {
 	for k, v := range GcpMed {
 		if v == med {
 			return k

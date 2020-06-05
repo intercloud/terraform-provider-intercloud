@@ -9,7 +9,7 @@ import (
 func TestConvertIntMedToHuman(t *testing.T) {
 	// tests cases declaration
 	cases := []struct {
-		intMed   int
+		intMed   uint64
 		expected string
 	}{
 		{
@@ -40,7 +40,7 @@ func TestConvertHumanMedToInt(t *testing.T) {
 	// tests cases declaration
 	cases := []struct {
 		humanMed string
-		expected int
+		expected uint64
 	}{
 		{
 			// case insensitive
