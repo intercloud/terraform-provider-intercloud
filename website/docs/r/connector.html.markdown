@@ -1,0 +1,132 @@
+---
+subcategory: 'CONNECTOR'
+layout: 'intercloud'
+page_title: 'InterCloud: intercloud_connector'
+description: |-
+  Creates and manages a connector
+---
+
+# Resource: intercloud_connector
+
+Manages a connector
+
+## Example Usage
+
+AWS connector
+
+```hcl
+resource "intercloud_connector" "aws_connector_1" {
+  name = "My AWS connector #1"
+  description = "A sample AWS connector named #1"
+  destination_id = data.intercloud_destination.aws_ireland.id
+  group_id = intercloud_group.my_group_1.id
+  aws {
+    aws_account_id = data.aws_caller_identity.current.account_id
+    aws_bgp_asn = 65536
+    public_access = true
+    public_prefixes = ["50.19.0.0/16"]
+  }
+}
+```
+
+Azure connector
+
+```hcl
+resource "intercloud_connector" "azure_connector_1" {
+  name = "My AZURE connector #1"
+  description = "A sample AZURE connector named #1"
+  destination_id = data.intercloud_destination.azure_1.id
+  group_id = intercloud_resource_group.my_group_1.id
+  azure {
+    service_key = azurerm_express_route_circuit.my_route.service_key
+    public_access = true
+    public_prefixes = ["50.19.0.0/16"]
+  }
+}
+```
+
+Google Cloud connector
+
+```hcl
+resource "intercloud_connector" "gcp_connector_1" {
+  name = "My AZURE connector #1"
+  description = "A sample AZURE connector named #1"
+  destination_id = data.intercloud_destination.azure_1.id
+  group_id = intercloud_resource_group.my_group_1.id
+  gcp {
+    med = 1
+    bandwidth = "BPS_50M"
+    pairing_key = "5fc2f532-4483-4767-a7b7-ea7355052156/europe-west4/1"
+  }
+}
+```
+
+## Argument Reference
+
+The following arguments are supported:
+
+- `name` - (Required) The connector name.
+
+- `description` - (Required) The connector description.
+
+- `destination_id` - (Required) The destination ID.
+
+- `group_id` - (Required) The group id.
+
+~> **NOTE:** Only one cloud section (`aws`, `azure`, `gcp`) can be set at the
+same time.
+
+When managing AWS connector the following arguments are supported :
+
+- `aws` - (Required) Key/value pairs for passing parameters :
+
+    - `aws_account_id` - (Required) The AWS account ID.
+    
+    - `aws_bgp_asn` - (Optional) The AWS BGP ASN.
+    
+    - `public_access` - (Optional) The connector public access.
+    
+    - `public_prefixes` - (Optional) The connector public prefixes (CIDR format).
+
+When managing Azure connector the following arguments are supported :
+
+- `azure` - (Required) Key/value pairs for passing parameters :
+
+    - `azure_service_key` - (Required) The Azure express route service key.
+    
+    - `public_access` - (Optional) The connector public access.
+    
+    - `public_prefixes` - (Optional) The connector public prefixes (CIDR format).
+
+When managing Google Cloud connector the following arguments are supported :
+
+- `gcp` - (Required) Key/value pairs for passing parameters :
+
+    - `pairing_key` - (Required) The Google Cloud pairing key.
+    
+    - `med` - (Optional) The priority value among allowed values [`low`, `high`] (default: `low`)
+    
+    - `bandwith` - (Optional) The allocated bandwith (only one available value for now:
+  `BPS_50M`)
+
+## Attributes Reference
+
+In addition to all arguments above, the following attributes are exported:
+
+- `id` - The connector id.
+
+- `irn` - The connector IRN.
+
+- `state` - The connector state.
+
+When managing a AWS connector the following attributes are exposed:
+
+- `aws` - Key/value pairs for exported attributes :
+
+  - `dxvif` - The virtual interface created on AWS side.
+
+When managing a GCP connector the following attributes are exposed:
+
+- `gcp` - Key/value pairs for exported attrbiutes :
+
+    - `interconnect_id` - The virtual interface created on GCP side.

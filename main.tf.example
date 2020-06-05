@@ -1,0 +1,68 @@
+terraform {
+  required_version = ">= 0.12.0"
+
+  required_providers {
+    # Build has to be named provider-
+    intercloud = ">= 0.0.0"
+    # http = "~> 1.2"
+  }
+}
+# provider "http" {
+
+# }
+
+
+provider "intercloud" {
+  access_token    = "x5CLnddIRXWABNMLXFoV-Q"
+  api_endpoint    = "https://api-console-dev.intercloud.io"
+  organization_id = "89c29e17-3f6f-4a01-a8df-faa2bde2ff92"
+}
+
+resource "intercloud_group" "group_1" {
+  name        = "group_1"
+  description = "toto"
+}
+
+data "intercloud_data_destination" "aws_ireland" {
+  location = "Ireland"
+  family   = "aws"
+}
+
+output "aws_ireland" {
+  value = data.intercloud_data_destination.aws_ireland
+}
+
+
+# resource "intercloud_connector" "connector_azure" {
+#   name        = "conn_aws"
+#   description = "descript"
+#   location = data.intercloud_data_location
+#   azure {}
+# }
+resource "intercloud_connector" "connector_aws" {
+  name           = "conn_aws"
+  description    = "descript"
+  destination_id = data.intercloud_data_destination.aws_ireland.id
+  aws {
+    aws_account_id  = 1235
+    asn             = 12345
+    public_access   = true
+    public_prefixes = ["192.168.142.2/30"]
+  }
+}
+# resource "intercloud_connector" "connector_enterprise" {
+#   name        = "conn_aws"
+#   description = "descript"
+#   cloud_appliance {}
+#   enterprise {}
+# }
+
+# resource "intercloud_connector" "connector_azure" {
+#   name = "conn_azure"
+# }
+
+# resource "intercloud_link" "link_aws_azure" {
+#   name = "link_1"
+#   from = connector_aws.id
+#   to   = connector_azure.id
+# }

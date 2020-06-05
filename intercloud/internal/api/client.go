@@ -1,0 +1,171 @@
+package api
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"net"
+	"net/http"
+	"net/url"
+	"time"
+)
+
+type Client struct {
+	endpoint   string
+	token      string
+	userAgents UserAgentProducts
+	client     *http.Client
+}
+
+type ErrQuery struct {
+	s       string
+	Err     error
+	bodyErr []byte
+}
+
+func (e *ErrQuery) Error() string {
+	return fmt.Sprintf("%s Body: %s", e.s, e.bodyErr)
+}
+
+func (e *ErrQuery) Unwrap() error {
+	return e.Err
+}
+func (e *ErrQuery) Body() []byte {
+	return e.bodyErr
+}
+
+func NewErrQuery(s string, bodyErr []byte, err error) error {
+	return &ErrQuery{
+		s:       s,
+		bodyErr: bodyErr,
+		Err:     err,
+	}
+}
+
+var (
+	ErrNotFound        = errors.New("not found")
+	ErrForbidden       = errors.New("forbidden")
+	ErrOther           = errors.New("other")
+	ErrUnauthorized    = errors.New("unauthorized")
+	ErrPaymentRequired = errors.New("payment required")
+)
+
+func getHttpClient() *http.Client {
+	var netTransport = &http.Transport{
+		Dial: (&net.Dialer{
+			Timeout: time.Duration(5 * time.Second),
+		}).Dial,
+		TLSHandshakeTimeout: time.Duration(5 * time.Second),
+	}
+
+	return &http.Client{
+		Timeout:   time.Duration(10 * time.Second),
+		Transport: netTransport,
+	}
+}
+
+func NewClient(
+	endpoint,
+	token string,
+	userAgents UserAgentProducts,
+	httpClient *http.Client,
+) (client *Client) {
+
+	if httpClient == nil {
+		httpClient = getHttpClient()
+	}
+
+	client = &Client{
+		endpoint:   endpoint,
+		token:      token,
+		userAgents: userAgents,
+		client:     httpClient,
+	}
+	return
+}
+
+func (c *Client) BuildRequest(ctx context.Context, method, url string, body interface{}) (req *http.Request, err error) {
+	var data []byte
+	if body != nil {
+		if data, err = json.Marshal(body); err != nil {
+			return
+		}
+	}
+	req, err = http.NewRequestWithContext(ctx, method, url, bytes.NewBuffer(data))
+	return
+}
+
+func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body interface{}, scope string, queryParams *url.Values) (resp *http.Response, err error) {
+
+	var api, path *url.URL
+
+	if ctx == nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+	}
+
+	if path, err = url.Parse(requestPath); err != nil {
+		return nil, err
+	}
+	if api, err = url.Parse(c.endpoint); err != nil {
+		return nil, err
+	}
+
+	target := api.ResolveReference(path)
+
+	if queryParams != nil {
+		for key, values := range *queryParams {
+			for _, v := range values {
+				target.Query().Add(key, v)
+			}
+		}
+	}
+
+	req, err := c.BuildRequest(ctx, method, target.String(), body)
+
+	if err != nil {
+		return
+	}
+
+	if scope != "" {
+		req.Header.Set("Intercloud-Scope", scope)
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.token)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("User-Agent", "Intercloud Terraform Provider "+c.userAgents.String())
+
+	resp, err = c.client.Do(req)
+
+	if err != nil {
+		return
+	}
+
+	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
+		return
+	}
+
+	// Never Get Gb of data
+	data, err := ioutil.ReadAll(resp.Body)
+
+	resp.Body = ioutil.NopCloser(bytes.NewReader(data))
+
+	err = json.NewDecoder(bytes.NewReader(data)).Decode(&resp)
+
+	switch resp.StatusCode {
+	case http.StatusUnauthorized:
+		return nil, NewErrQuery("Unauthorized", data, ErrUnauthorized)
+	case http.StatusPaymentRequired:
+		return nil, NewErrQuery("Unauthorized", data, ErrUnauthorized)
+	case http.StatusForbidden:
+		return nil, NewErrQuery("Not allowed", data, ErrForbidden)
+	case http.StatusNotFound:
+		return nil, NewErrQuery("Not found", data, ErrNotFound)
+	default:
+		return nil, NewErrQuery("Other", data, ErrOther)
+	}
+}
