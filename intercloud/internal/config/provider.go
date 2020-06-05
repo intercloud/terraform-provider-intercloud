@@ -2,9 +2,9 @@ package config
 
 import (
 	"github.com/google/uuid"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/api"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/client"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/version"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/api"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/client"
+	"github.com/intercloud/terraform-provider-intercloud/version"
 )
 
 type ProviderConfig struct {

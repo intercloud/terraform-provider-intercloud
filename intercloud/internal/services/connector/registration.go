@@ -3,9 +3,9 @@ package connector
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/connector/csp/aws"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/connector/csp/azure"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/connector/csp/gcp"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/aws"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/azure"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/gcp"
 )
 
 type Registration struct{}

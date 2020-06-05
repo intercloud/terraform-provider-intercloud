@@ -1,11 +1,11 @@
 package provider
 
 import (
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/common"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/connector"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/group"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/link"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/organization"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/common"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/group"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/link"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/organization"
 )
 
 func SupportedServices() []common.ServiceRegistration {

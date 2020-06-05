@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/connector/csp/gcp"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/gcp"
 )
 
 func TestConvertIntMedToHuman(t *testing.T) {

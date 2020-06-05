@@ -12,9 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 	"github.com/spf13/viper"
 
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/api"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/config"
 	homedir "github.com/mitchellh/go-homedir"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/api"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/config"
 )
 
 // This is a global MutexKV for use within this plugin.

@@ -10,9 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
-	apiclient "gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/api"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/client"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/config"
+	apiclient "github.com/intercloud/terraform-provider-intercloud/intercloud/internal/api"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/client"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/config"
 )
 
 var cspType = []string{}

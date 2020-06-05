@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud"
 
 	"github.com/hashicorp/terraform-plugin-sdk/plugin"
 )

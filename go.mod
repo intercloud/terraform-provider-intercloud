@@ -1,4 +1,4 @@
-module gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git
+module github.com/intercloud/terraform-provider-intercloud
 
 go 1.14
 

@@ -11,9 +11,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/acceptance"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/client"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/config"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/acceptance"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/client"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/config"
 )
 
 func TestAccGroup_basic(t *testing.T) {

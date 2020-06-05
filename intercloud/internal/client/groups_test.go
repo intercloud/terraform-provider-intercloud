@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/api"
 	"github.com/stretchr/testify/assert"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/api"
 )
 
 func Test_client_ReadGroup(t *testing.T) {

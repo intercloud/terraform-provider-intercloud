@@ -4,8 +4,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/client"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/config"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/client"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/config"
 )
 
 func dataSourceDestinations(allowedFamilies []string) *schema.Resource {

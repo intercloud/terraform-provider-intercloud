@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/group"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/group"
 )
 
 func TestConvertCapacityWithUnits(t *testing.T) {

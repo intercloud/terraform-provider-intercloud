@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/api"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/api"
 )
 
 func (c *client) ReadGroup(in *ReadGroupInput) (out *ReadGroupOutput, err error) {

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/api"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/api"
 )
 
 func (c *client) ReadLink(input *ReadLinkInput) (output *ReadLinkOutput, err error) {

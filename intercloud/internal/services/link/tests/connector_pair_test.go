@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/link"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/link"
 )
 
 func TestEqualConnectorPairs(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/client"
-	"gitlab.intercloud.fr/intercloud/ds9/iac/terraform-provider-intercloud.git/intercloud/internal/services/connector/csp/gcp"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/client"
+	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/gcp"
 )
 
 var (
