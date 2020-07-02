@@ -6,9 +6,9 @@ terraform {
   required_providers {
     # Build has to be named terraform-provider-intercloud_v0.0.0
     #intercloud = ">= 0.0.0"
-    tls        = "~> 2.1"
-    aws        = "~> 2.58"
-    random     = "~> 2.2"
+    tls    = "~> 2.1"
+    aws    = "~> 2.58"
+    random = "~> 2.2"
   }
 }
 
@@ -31,13 +31,13 @@ module "ic_gcp" {
     google = google.ic
   }
   # module variables
-  tag_name       = random_pet.tag.id
-  google_project = var.google_project
-  google_region  = var.google_region
-  google_zone    = var.google_zone
+  tag_name                                                = random_pet.tag.id
+  google_project                                          = var.google_project
+  google_region                                           = var.google_region
+  google_zone                                             = var.google_zone
   google_interconnect_attachment_edge_availability_domain = var.google_interconnect_attachment_edge_availability_domain
-  google_interconnect_attachment_router = var.google_interconnect_attachment_router
-  ssh_public_key  = tls_private_key.common.public_key_openssh
+  google_interconnect_attachment_router                   = var.google_interconnect_attachment_router
+  ssh_public_key                                          = tls_private_key.common.public_key_openssh
 }
 
 # ------------------------------------------------

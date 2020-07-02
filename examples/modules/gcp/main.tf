@@ -1,16 +1,17 @@
 provider "google" {
 }
 
-data "google_compute_network" "gcp_network" {
+resource "google_compute_network" "gcp_network" {
   name = "terraform-vpc-${var.tag_name}"
   project = var.google_project
+  auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "gcp_subnetwork" {
   name          = "terraform-${var.tag_name}"
   ip_cidr_range = "10.100.3.0/24"
   region        = var.google_region
-  network       = data.google_compute_network.gcp_network.self_link
+  network       = google_compute_network.gcp_network.self_link
 }
 
 resource "google_compute_instance" "gcp_instance" {
