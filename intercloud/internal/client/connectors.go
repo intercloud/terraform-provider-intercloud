@@ -14,11 +14,9 @@ var (
 )
 
 type AwsParamsApi struct {
-	ASN            uint16          `json:"asNumber"`
-	AwsAccount     int             `json:"awsAccount"`
-	PublicAccess   bool            `json:"publicAccess"`
-	PublicPrefixes *PublicPrefixes `json:"publicPrefixes,omitempty"`
-	Dxvif          string          `json:"dxvif,omitempty"`
+	ASN        uint16 `json:"asNumber"`
+	AwsAccount int    `json:"awsAccount"`
+	Dxvif      string `json:"dxvif,omitempty"`
 }
 
 type CspResponseApi struct {

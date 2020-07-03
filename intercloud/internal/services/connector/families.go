@@ -3,7 +3,6 @@ package connector
 import (
 	"errors"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/client"
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/gcp"
 )
@@ -51,18 +50,8 @@ func expandFamilyAwsParams(m map[string]interface{}) *client.AwsParams {
 	if v, ok := m["aws_bgp_asn"]; ok {
 		params.ASN = uint16(v.(int))
 	}
-	if v, ok := m["public_access"]; ok {
-		params.PublicAccess = v.(bool)
-	}
 	if v, ok := m["dxvif"]; ok {
 		params.Dxvif = v.(string)
-	}
-	if v, ok := m["public_prefixes"]; ok {
-		s := v.(*schema.Set).List()
-		params.PublicPrefixes = &client.PublicPrefixes{}
-		for i := range s {
-			*params.PublicPrefixes = append(*params.PublicPrefixes, s[i].(string))
-		}
 	}
 
 	return &params
@@ -73,12 +62,7 @@ func flattenFamilyAwsParams(params *client.AwsParams) []interface{} {
 
 	result["aws_bgp_asn"] = int(params.ASN)
 	result["aws_account_id"] = params.AwsAccount
-	result["public_access"] = params.PublicAccess
 	result["dxvif"] = params.Dxvif
-
-	if params.PublicPrefixes != nil {
-		result["public_prefixes"] = *params.PublicPrefixes
-	}
 
 	return []interface{}{result}
 }
@@ -89,16 +73,6 @@ func expandFamilyAzureParams(m map[string]interface{}) *client.AzureParams {
 	if v, ok := m["service_key"]; ok {
 		params.ServiceKey = v.(string)
 	}
-	if v, ok := m["public_access"]; ok {
-		params.PublicAccess = v.(bool)
-	}
-	if v, ok := m["public_prefixes"]; ok {
-		s := v.(*schema.Set).List()
-		params.PublicPrefixes = &client.PublicPrefixes{}
-		for i := range s {
-			*params.PublicPrefixes = append(*params.PublicPrefixes, s[i].(string))
-		}
-	}
 
 	return &params
 }
@@ -107,10 +81,6 @@ func flattenFamilyAzureParams(params *client.AzureParams) []interface{} {
 	result := make(map[string]interface{})
 
 	result["service_key"] = params.ServiceKey
-	result["public_access"] = params.PublicAccess
-	if params.PublicPrefixes != nil {
-		result["public_prefixes"] = *params.PublicPrefixes
-	}
 
 	return []interface{}{result}
 }
