@@ -19,20 +19,6 @@ func ResourceSchemaAws() *schema.Resource {
 				ValidateFunc: validation.IntAtMost(int(^uint16(0))), // 65535
 				Default:      64512,
 			},
-			"public_access": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Default:  false,
-			},
-			"public_prefixes": {
-				Type: schema.TypeSet,
-				Elem: &schema.Schema{
-					Type:         schema.TypeString,
-					ValidateFunc: validation.IsCIDR,
-				},
-				Set:      schema.HashString,
-				Optional: true,
-			},
 			"dxvif": {
 				Type:     schema.TypeString,
 				Computed: true,

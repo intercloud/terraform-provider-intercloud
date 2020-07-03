@@ -93,17 +93,13 @@ type ReadConnectorOutput struct {
 }
 
 type AwsParams struct {
-	ASN            uint16          `json:"asNumber"`
-	AwsAccount     int             `json:"awsAccount"`
-	PublicAccess   bool            `json:"publicAccess"`
-	PublicPrefixes *PublicPrefixes `json:"publicPrefixes,omitempty"`
-	Dxvif          string          `json:"dxvif,omitempty"`
+	ASN        uint16 `json:"asNumber"`
+	AwsAccount int    `json:"awsAccount"`
+	Dxvif      string `json:"dxvif,omitempty"`
 }
 
 type AzureParams struct {
-	ServiceKey     string          `json:"azureServiceKey"`
-	PublicAccess   bool            `json:"publicAccess"`
-	PublicPrefixes *PublicPrefixes `json:"publicPrefixes,omitempty"`
+	ServiceKey string `json:"azureServiceKey"`
 }
 
 type GcpParams struct {

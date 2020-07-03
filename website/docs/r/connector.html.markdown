@@ -23,8 +23,6 @@ resource "intercloud_connector" "aws_connector_1" {
   aws {
     aws_account_id = data.aws_caller_identity.current.account_id
     aws_bgp_asn = 65536
-    public_access = true
-    public_prefixes = ["50.19.0.0/16"]
   }
 }
 ```
@@ -39,8 +37,6 @@ resource "intercloud_connector" "azure_connector_1" {
   group_id = intercloud_resource_group.my_group_1.id
   azure {
     service_key = azurerm_express_route_circuit.my_route.service_key
-    public_access = true
-    public_prefixes = ["50.19.0.0/16"]
   }
 }
 ```
@@ -80,34 +76,27 @@ When managing AWS connector the following arguments are supported :
 
 - `aws` - (Required) Key/value pairs for passing parameters :
 
-    - `aws_account_id` - (Required) The AWS account ID.
-    
-    - `aws_bgp_asn` - (Optional) The AWS BGP ASN.
-    
-    - `public_access` - (Optional) The connector public access.
-    
-    - `public_prefixes` - (Optional) The connector public prefixes (CIDR format).
+  - `aws_account_id` - (Required) The AWS account ID.
+
+  - `aws_bgp_asn` - (Optional) The AWS BGP ASN.
 
 When managing Azure connector the following arguments are supported :
 
 - `azure` - (Required) Key/value pairs for passing parameters :
 
-    - `azure_service_key` - (Required) The Azure express route service key.
-    
-    - `public_access` - (Optional) The connector public access.
-    
-    - `public_prefixes` - (Optional) The connector public prefixes (CIDR format).
+  - `azure_service_key` - (Required) The Azure express route service key.
 
 When managing Google Cloud connector the following arguments are supported :
 
 - `gcp` - (Required) Key/value pairs for passing parameters :
 
-    - `pairing_key` - (Required) The Google Cloud pairing key.
-    
-    - `med` - (Optional) The priority value among allowed values [`low`, `high`] (default: `low`)
-    
-    - `bandwith` - (Optional) The allocated bandwith (only one available value for now:
-  `BPS_50M`)
+  - `pairing_key` - (Required) The Google Cloud pairing key.
+
+  - `med` - (Optional) The priority value among allowed values [`low`, `high`]
+  (default: `low`)
+
+  - `bandwith` - (Optional) The allocated bandwith (only one available value
+  for now: `BPS_50M`)
 
 ## Attributes Reference
 
@@ -129,4 +118,4 @@ When managing a GCP connector the following attributes are exposed:
 
 - `gcp` - Key/value pairs for exported attrbiutes :
 
-    - `interconnect_id` - The virtual interface created on GCP side.
+  - `interconnect_id` - The virtual interface created on GCP side.
