@@ -27,6 +27,24 @@ resource "intercloud_connector" "aws_connector_1" {
 }
 ```
 
+AWS hosted connection connector
+
+```hcl
+resource "intercloud_connector" "aws_connector_1" {
+  name = "My AWS connector #1"
+  description = "A sample AWS connector named #1"
+  destination_id = data.intercloud_destination.aws_ireland.id
+  group_id = intercloud_group.my_group_1.id
+  aws {
+    aws_account_id = data.aws_caller_identity.current.account_id
+    aws_bgp_asn = 65536
+    hosted_connection {
+      port_speed = "50Mbps"
+    }
+  }
+}
+```
+
 Azure connector
 
 ```hcl
@@ -80,6 +98,12 @@ When managing AWS connector the following arguments are supported :
 
   - `aws_bgp_asn` - (Optional) The AWS BGP ASN.
 
+  - `hosted_connection` (Optional) Hosted connection parameters :
+  
+    - `port_speed` (Optional) The port speed among allowed values `50Mbps`,
+    `100Mbps`, `200Mbps`, `300Mbps`, `400Mbps`, `500Mbps`, `1Gbps`, `2Gbps`,
+    `5Gbps` (default: `50Mbps`)
+
 When managing Azure connector the following arguments are supported :
 
 - `azure` - (Required) Key/value pairs for passing parameters :
@@ -92,7 +116,7 @@ When managing Google Cloud connector the following arguments are supported :
 
   - `pairing_key` - (Required) The Google Cloud pairing key.
 
-  - `med` - (Optional) The priority value among allowed values [`low`, `high`]
+  - `med` - (Optional) The priority value among allowed values `low`, `high`
   (default: `low`)
 
   - `bandwith` - (Optional) The allocated bandwith (only one available value
@@ -112,7 +136,15 @@ When managing a AWS connector the following attributes are exposed:
 
 - `aws` - Key/value pairs for exported attributes :
 
-  - `dxvif` - The virtual interface created on AWS side.
+  - `dxvif` - (Direct connection only) The virtual interface created
+  on AWS side.
+
+  - `hosted_connection` - (Hosted connection only) Key/value pairs for
+  hosted connection exported attributes :
+
+    - `vlan_id` - VLAN ID.
+
+    - `connection_id` - Hosted connection ID.
 
 When managing a GCP connector the following attributes are exposed:
 
