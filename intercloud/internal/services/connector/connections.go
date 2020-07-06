@@ -1,6 +1,9 @@
 package connector
 
 import (
+	"log"
+
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/client"
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/gcp"
 )
@@ -66,7 +69,8 @@ func expandConnectionAwsHostedParams(m map[string]interface{}) *client.AwsHosted
 		params.ASN = uint16(v.(int))
 	}
 	if v, ok := m["hosted_connection"]; ok {
-		hosted := v.([]interface{})[0].(map[string]interface{})
+		hosted := v.(*schema.Set).List()[0].(map[string]interface{})
+		log.Printf("[DEBUG] hosted params to expand : %+v", hosted)
 		if v, ok := hosted["port_speed"]; ok {
 			params.PortSpeed = v.(string)
 		}
@@ -96,9 +100,13 @@ func flattenConnectionAwsHostedParams(params *client.AwsHostedParams) []interfac
 
 	result["aws_bgp_asn"] = int(params.ASN)
 	result["aws_account_id"] = params.AwsAccount
-	result["port_speed"] = params.PortSpeed
-	result["vlan_id"] = params.VlanID
-	result["connection_id"] = params.ConnectionID
+
+	hostedConnection := map[string]interface{}{
+		"port_speed":    params.PortSpeed,
+		"vlan_id":       params.VlanID,
+		"connection_id": params.ConnectionID,
+	}
+	result["hosted_connection"] = []interface{}{hostedConnection}
 
 	return []interface{}{result}
 }

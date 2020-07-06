@@ -100,7 +100,6 @@ func resourceConnector() *schema.Resource {
 }
 
 func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err error) {
-
 	cfg := meta.(*config.ProviderConfig)
 	api := cfg.ApiClient()
 
@@ -131,9 +130,10 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 
 		// connection : aws, aws hosted, azure, gcp
 		connection := findConnection(d)
+		log.Printf("[DEBUG] Connection found for creation (family = %q, connection type = %q)", connection.Family(), connection.ConnectionType())
 		input.Connector.Csp.FamilyID = familiesOut.Families[connection.Family()]
 		connectionParams := d.Get(connection.Family()).([]interface{})[0].(map[string]interface{})
-		switch *connection {
+		switch connection {
 		case ConnectionAws:
 			input.Connector.Csp.AwsParams = expandConnectionAwsParams(connectionParams)
 		case ConnectionAwsHosted:
@@ -275,21 +275,21 @@ func resourceConnectorUpdate(d *schema.ResourceData, meta interface{}) error {
 	return resourceConnectorRead(d, meta)
 }
 
-func findConnection(d *schema.ResourceData) *Connection {
+func findConnection(d *schema.ResourceData) Connection {
 	allConnections := AllConnections()
-	var result *Connection
+	var result Connection
 	for _, connection := range allConnections {
 		// check presence of family inside resource
-		if v, ok := d.GetOk(connection.Family()); ok {
+		if v, ok := d.GetOk(connection.Family()); ok && len(v.([]interface{})) > 0 {
 			// no specific connection type
 			if connection.ConnectionType() == "" {
-				result = &connection
+				result = connection
 				continue
 			}
 			// check specific connection type
 			sub := v.([]interface{})[0].(map[string]interface{})
-			if _, ok := sub[connection.ConnectionType()]; ok {
-				result = &connection
+			if t, ok := sub[connection.ConnectionType()]; ok && len(t.(*schema.Set).List()) > 0 {
+				result = connection
 			}
 		}
 	}

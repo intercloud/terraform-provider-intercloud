@@ -33,7 +33,7 @@ func ResourceSchemaAws() *schema.Resource {
 							ValidateFunc: validation.StringInSlice([]string{"50Mbps", "100Mbps", "200Mbps", "300Mbps", "400Mbps", "500Mbps", "1Gbps", "2Gbps", "5Gbps"}, false),
 						},
 						"vlan_id": {
-							Type:     schema.TypeString,
+							Type:     schema.TypeInt,
 							Computed: true,
 						},
 						"connection_id": {
