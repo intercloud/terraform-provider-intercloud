@@ -1,7 +1,6 @@
 package connector
 
 import (
-
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/client"
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/gcp"
 )
@@ -9,7 +8,7 @@ import (
 type Connection int
 
 const (
-	ConnectionAws Connection = iota + 1
+	ConnectionAws Connection = iota
 	ConnectionAwsHosted
 	ConnectionAzure
 	ConnectionGcp
