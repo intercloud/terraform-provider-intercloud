@@ -21,26 +21,9 @@ var allType = append(cspType, enterpriseType...)
 
 var locationType = []string{"destination_id", "cloud_appliance_id"}
 
-// func validateCspLocation(i interface{}, k string) (warnings []string, err []error) {
-
-// 	v, ok := i.(string)
-// 	if !ok {
-// 		return nil, []error{fmt.Errorf("expected type of %q to be string", k)}
-// 	}
-
-// 	sort.Strings(cspType)
-
-// 	if idx := sort.SearchStrings(cspType, v); idx == len(cspType) {
-// 		return nil, []error{fmt.Errorf("expected value of %q to be one of %s", k, strings.Join(cspType, ","))}
-// 	}
-
-// 	return nil, nil
-
-// }
-
 func resourceConnector() *schema.Resource {
 
-	supportedCsps := SupportedCsps()
+	supportedCsps := SupportedCspConnections()
 	supportedEnterprises := SupportedEnterprises()
 
 	cspSchemas := make(map[string]*schema.Schema, len(supportedCsps))
@@ -146,22 +129,19 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 			DestinationID: uuid.MustParse(destinationID.(string)),
 		}
 
-		for idx := range cspType {
-			if v, ok := d.GetOk(cspType[idx]); ok && len(v.([]interface{})) > 0 {
-				options := v.([]interface{})
-				s := options[0].(map[string]interface{})
-
-				switch cspType[idx] {
-				case FamilyAws.String():
-					input.Connector.Csp.AwsParams = expandFamilyAwsParams(s)
-				case FamilyAzure.String():
-					input.Connector.Csp.AzureParams = expandFamilyAzureParams(s)
-				case FamilyGcp.String():
-					input.Connector.Csp.GcpParams = expandFamilyGcpParams(s)
-				}
-				input.Connector.Csp.FamilyID = familiesOut.Families[cspType[idx]]
-				break
-			}
+		// connection : aws, aws hosted, azure, gcp
+		connection := findConnection(d)
+		input.Connector.Csp.FamilyID = familiesOut.Families[connection.Family()]
+		connectionParams := d.Get(connection.Family()).([]interface{})[0].(map[string]interface{})
+		switch *connection {
+		case ConnectionAws:
+			input.Connector.Csp.AwsParams = expandConnectionAwsParams(connectionParams)
+		case ConnectionAwsHosted:
+			input.Connector.Csp.AwsHostedParams = expandConnectionAwsHostedParams(connectionParams)
+		case ConnectionAzure:
+			input.Connector.Csp.AzureParams = expandConnectionAzureParams(connectionParams)
+		case ConnectionGcp:
+			input.Connector.Csp.GcpParams = expandConnectionGcpParams(connectionParams)
 		}
 	}
 
@@ -246,19 +226,25 @@ func resourceConnectorRead(d *schema.ResourceData, meta interface{}) (err error)
 		switch {
 		case output.Connector.Csp.AwsParams != nil:
 			{
-				if err := d.Set(FamilyAws.String(), flattenFamilyAwsParams(output.Connector.Csp.AwsParams)); err != nil {
+				if err := d.Set(FamilyAws.String(), flattenConnectionAwsParams(output.Connector.Csp.AwsParams)); err != nil {
+					return fmt.Errorf("Error setting `%q`: %+v", FamilyAws.String(), err)
+				}
+			}
+		case output.Connector.Csp.AwsHostedParams != nil:
+			{
+				if err := d.Set(FamilyAws.String(), flattenConnectionAwsHostedParams(output.Connector.Csp.AwsHostedParams)); err != nil {
 					return fmt.Errorf("Error setting `%q`: %+v", FamilyAws.String(), err)
 				}
 			}
 		case output.Connector.Csp.AzureParams != nil:
 			{
-				if err := d.Set(FamilyAzure.String(), flattenFamilyAzureParams(output.Connector.Csp.AzureParams)); err != nil {
+				if err := d.Set(FamilyAzure.String(), flattenConnectionAzureParams(output.Connector.Csp.AzureParams)); err != nil {
 					return fmt.Errorf("Error setting `%q`: %+v", FamilyAzure.String(), err)
 				}
 			}
 		case output.Connector.Csp.GcpParams != nil:
 			{
-				if err := d.Set(FamilyGcp.String(), flattenFamilyGcpParams(output.Connector.Csp.GcpParams)); err != nil {
+				if err := d.Set(FamilyGcp.String(), flattenConnectionGcpParams(output.Connector.Csp.GcpParams)); err != nil {
 					return fmt.Errorf("Error setting `%q`: %+v", FamilyGcp.String(), err)
 				}
 			}
@@ -287,4 +273,25 @@ func resourceConnectorDelete(d *schema.ResourceData, meta interface{}) (err erro
 
 func resourceConnectorUpdate(d *schema.ResourceData, meta interface{}) error {
 	return resourceConnectorRead(d, meta)
+}
+
+func findConnection(d *schema.ResourceData) *Connection {
+	allConnections := AllConnections()
+	var result *Connection
+	for _, connection := range allConnections {
+		// check presence of family inside resource
+		if v, ok := d.GetOk(connection.Family()); ok {
+			// no specific connection type
+			if connection.ConnectionType() == "" {
+				result = &connection
+				continue
+			}
+			// check specific connection type
+			sub := v.([]interface{})[0].(map[string]interface{})
+			if _, ok := sub[connection.ConnectionType()]; ok {
+				result = &connection
+			}
+		}
+	}
+	return result
 }
