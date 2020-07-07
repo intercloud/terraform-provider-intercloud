@@ -20,7 +20,6 @@ type AwsParamsApi struct {
 }
 
 type CspResponseApi struct {
-	FamilyID      uuid.UUID     `json:"connectorFamilyID"`
 	DestinationID uuid.UUID     `json:"cloudDestinationID"`
 	AwsParams     *AwsParamsApi `json:"aws,omitempty"`
 }
