@@ -18,6 +18,8 @@ repos:
     rev: master
     hooks:
       - id: go-mod-tidy
+        stages: [commit-msg]
+      - id: go-fmt
   # Need to set path
   # - repo: local
   #   hooks:
