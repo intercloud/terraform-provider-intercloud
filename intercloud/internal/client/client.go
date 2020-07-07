@@ -72,11 +72,12 @@ type ReadConnectorInput struct {
 }
 
 type CspRead struct {
-	FamilyID      uuid.UUID    `json:"connectorFamilyID"`
-	DestinationID uuid.UUID    `json:"cloudDestinationID"`
-	AwsParams     *AwsParams   `json:"aws,omitempty"`
-	AzureParams   *AzureParams `json:"azure,omitempty"`
-	GcpParams     *GcpParams   `json:"gcp,omitempty"`
+	FamilyID        uuid.UUID        `json:"connectorFamilyID"`
+	DestinationID   uuid.UUID        `json:"cloudDestinationID"`
+	AwsParams       *AwsParams       `json:"aws,omitempty"`
+	AwsHostedParams *AwsHostedParams `json:"awshostedconnection,omitempty"`
+	AzureParams     *AzureParams     `json:"azure,omitempty"`
+	GcpParams       *GcpParams       `json:"gcp,omitempty"`
 }
 
 type ConnectorRead struct {
@@ -98,6 +99,14 @@ type AwsParams struct {
 	Dxvif      string `json:"dxvif,omitempty"`
 }
 
+type AwsHostedParams struct {
+	ASN          uint16 `json:"asNumber"`
+	AwsAccount   int    `json:"awsAccount"`
+	PortSpeed    string `json:"portSpeed"`
+	VlanID       int    `json:"vlanId,omitempty"`
+	ConnectionID string `json:"connectionId,omitempty"`
+}
+
 type AzureParams struct {
 	ServiceKey string `json:"azureServiceKey"`
 }
@@ -110,11 +119,12 @@ type GcpParams struct {
 }
 
 type CspCreate struct {
-	FamilyID      uuid.UUID    `json:"connectorFamilyID"`
-	DestinationID uuid.UUID    `json:"cloudDestinationID"`
-	AwsParams     *AwsParams   `json:"aws,omitempty"`
-	AzureParams   *AzureParams `json:"azure,omitempty"`
-	GcpParams     *GcpParams   `json:"gcp,omitempty"`
+	FamilyID        uuid.UUID        `json:"connectorFamilyID"`
+	DestinationID   uuid.UUID        `json:"cloudDestinationID"`
+	AwsParams       *AwsParams       `json:"aws,omitempty"`
+	AwsHostedParams *AwsHostedParams `json:"awshostedconnection,omitempty"`
+	AzureParams     *AzureParams     `json:"azure,omitempty"`
+	GcpParams       *GcpParams       `json:"gcp,omitempty"`
 }
 type EnterpriseCreate struct {
 	// @TODO:

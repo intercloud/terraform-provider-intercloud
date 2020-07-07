@@ -18,8 +18,8 @@ func (r Registration) Name() string {
 // SupportedDataSources returns the supported Data Sources supported by this Service
 func (r Registration) SupportedDataSources() map[string]*schema.Resource {
 	return map[string]*schema.Resource{
-		"intercloud_destination":  dataSourceDestination(sliceFamilies),
-		"intercloud_destinations": dataSourceDestinations(sliceFamilies),
+		"intercloud_destination":  dataSourceDestination(AllFamilies()),
+		"intercloud_destinations": dataSourceDestinations(AllFamilies()),
 	}
 }
 
@@ -30,7 +30,7 @@ func (r Registration) SupportedResources() map[string]*schema.Resource {
 	}
 }
 
-func SupportedCsps() map[string]*schema.Resource {
+func SupportedCspConnections() map[string]*schema.Resource {
 	sup := make(map[string]*schema.Resource, 2)
 	sup[FamilyAws.String()] = aws.ResourceSchemaAws()
 	sup[FamilyAzure.String()] = azure.ResourceSchemaAzure()
