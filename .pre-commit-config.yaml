@@ -3,11 +3,13 @@ repos:
     rev: v1.24.0
     hooks:
       - id: golangci-lint
+        stages: [commit-msg]
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.22.0
     hooks:
       - id: markdownlint
         args: [--fix]
+        stages: [commit-msg]
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v2.2.1
     hooks:
@@ -20,6 +22,7 @@ repos:
       - id: go-mod-tidy
         stages: [commit-msg]
       - id: go-fmt
+        stages: [commit-msg]
   # Need to set path
   # - repo: local
   #   hooks:

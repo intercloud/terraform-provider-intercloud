@@ -117,7 +117,7 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 	}
 
 	if destinationID, ok := d.GetOk("destination_id"); ok {
-		
+
 		input.Connector.Csp = &client.CspCreate{
 			DestinationID: uuid.MustParse(destinationID.(string)),
 		}
