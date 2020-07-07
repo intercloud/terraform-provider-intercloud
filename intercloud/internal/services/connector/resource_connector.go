@@ -132,7 +132,8 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 		connection := findConnection(d)
 		log.Printf("[DEBUG] Connection found for creation (family = %q, connection type = %q)", connection.Family(), connection.ConnectionType())
 		input.Connector.Csp.FamilyID = familiesOut.Families[connection.Family()]
-		connectionParams := d.Get(connection.Family()).([]interface{})[0].(map[string]interface{})
+		familyParams := d.Get(connection.Family()).([]interface{})
+		connectionParams := familyParams[0].(map[string]interface{})
 		switch connection {
 		case ConnectionAws:
 			input.Connector.Csp.AwsParams = expandConnectionAwsParams(connectionParams)

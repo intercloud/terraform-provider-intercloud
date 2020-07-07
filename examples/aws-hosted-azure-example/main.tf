@@ -77,7 +77,7 @@ resource "intercloud_group" "group_1" {
 
 resource "intercloud_connector" "connector_aws" {
   name           = "conn-aws-${random_pet.tag.id}"
-  description    = "descript"
+  description    = "intercloud connector for aws"
   group_id       = intercloud_group.group_1.id
   destination_id = data.intercloud_destination.aws_destination.id
   aws {
@@ -91,7 +91,7 @@ resource "intercloud_connector" "connector_aws" {
 
 resource "intercloud_connector" "connector_azure" {
   name           = "conn_azure-${random_pet.tag.id}"
-  description    = "descript"
+  description    = "intercloud connector for azure"
   group_id       = intercloud_group.group_1.id
   destination_id = data.intercloud_destination.azure_destination.id
   azure {
@@ -101,7 +101,7 @@ resource "intercloud_connector" "connector_azure" {
 
 resource "intercloud_link" "link_azure_aws" {
   name        = "link-${random_pet.tag.id}"
-  description = "descript"
+  description = "link between aws and azure connectors"
   from        = intercloud_connector.connector_azure.id
   to          = intercloud_connector.connector_aws.id
 }

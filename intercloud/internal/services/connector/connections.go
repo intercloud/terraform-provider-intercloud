@@ -23,7 +23,7 @@ type connectionData struct {
 }
 
 var (
-	sliceConnections = []*connectionData{
+	sliceConnections = []connectionData{
 		{family: FamilyAws.String()},
 		{family: FamilyAws.String(), connectionType: "hosted_connection"},
 		{family: FamilyAzure.String()},
