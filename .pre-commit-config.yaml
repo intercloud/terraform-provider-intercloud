@@ -3,11 +3,6 @@ repos:
     rev: v1.24.0
     hooks:
       - id: golangci-lint
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.22.0
-    hooks:
-      - id: markdownlint
-        args: [--fix]
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v2.2.1
     hooks:
@@ -18,10 +13,8 @@ repos:
     rev: master
     hooks:
       - id: go-mod-tidy
-  # Need to set path
-  # - repo: local
-  #   hooks:
-  #     - id: tfproviderlint
-  #       name: Provider lint error
-  #       language: system
-  #       entry: make provider-lint
+      - id: go-fmt
+  - repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.9
+    hooks:
+      - id: terraform-fmt
