@@ -2,8 +2,8 @@ provider "google" {
 }
 
 resource "google_compute_network" "gcp_network" {
-  name = "terraform-vpc-${var.tag_name}"
-  project = var.google_project
+  name                    = "terraform-vpc-${var.tag_name}"
+  project                 = var.google_project
   auto_create_subnetworks = false
 }
 
@@ -24,11 +24,11 @@ resource "google_compute_instance" "gcp_instance" {
     }
   }
   network_interface {
-      subnetwork = google_compute_subnetwork.gcp_subnetwork.self_link
+    subnetwork = google_compute_subnetwork.gcp_subnetwork.self_link
   }
   metadata = {
-   ssh-keys = "ubuntu:${var.ssh_public_key}"
- }
+    ssh-keys = "ubuntu:${var.ssh_public_key}"
+  }
 }
 
 resource "google_compute_interconnect_attachment" "gcp_interconnect" {

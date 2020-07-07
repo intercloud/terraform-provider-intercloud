@@ -5,12 +5,12 @@ variable "tag_name" {
 
 variable "azure_express_route_circuit_name" {
   description = "Azure express circuit name to provision"
-  type = string
+  type        = string
 }
 
 variable "azure_resource_group_name" {
   description = "Azure resource group containing managed resources"
-  type = string
+  type        = string
 }
 
 
