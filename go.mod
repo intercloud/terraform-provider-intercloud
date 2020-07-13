@@ -10,6 +10,7 @@ require (
 	github.com/hashicorp/terraform-plugin-sdk v1.9.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/gox v1.0.1
+	github.com/sethvargo/go-retry v0.1.0
 	github.com/spf13/viper v1.6.3
 	github.com/stretchr/testify v1.5.1
 )

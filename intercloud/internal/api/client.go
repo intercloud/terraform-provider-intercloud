@@ -7,10 +7,13 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/sethvargo/go-retry"
 )
 
 type Client struct {
@@ -139,33 +142,46 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "Intercloud Terraform Provider "+c.userAgents.String())
 
-	resp, err = c.client.Do(req)
+	// exponential backoff mechanism with jitter (+/- 500ms)
+	b, _ := retry.NewExponential(1 * time.Second)
+	b = retry.WithJitter(500*time.Millisecond, b)
+	b = retry.WithMaxRetries(3, b)
+	err = retry.Do(ctx, b, func(ctx context.Context) error {
+		resp, err = c.client.Do(req)
+
+		if err != nil {
+			return err
+		}
+
+		if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
+			return nil
+		}
+
+		// Never Get Gb of data
+		data, err := ioutil.ReadAll(resp.Body)
+		resp.Body = ioutil.NopCloser(bytes.NewReader(data))
+		err = json.NewDecoder(bytes.NewReader(data)).Decode(&resp)
+		log.Printf("[DEBUG] response status code = %d", resp.StatusCode)
+		switch resp.StatusCode {
+		case http.StatusTooManyRequests:
+			log.Print("[INFO] rate limit has been hit, waiting before retry")
+			return retry.RetryableError(err)
+		case http.StatusUnauthorized:
+			return NewErrQuery("Unauthorized", data, ErrUnauthorized)
+		case http.StatusPaymentRequired:
+			return NewErrQuery("Unauthorized", data, ErrUnauthorized)
+		case http.StatusForbidden:
+			return NewErrQuery("Not allowed", data, ErrForbidden)
+		case http.StatusNotFound:
+			return NewErrQuery("Not found", data, ErrNotFound)
+		default:
+			return NewErrQuery("Other", data, ErrOther)
+		}
+	})
 
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
-		return
-	}
-
-	// Never Get Gb of data
-	data, err := ioutil.ReadAll(resp.Body)
-
-	resp.Body = ioutil.NopCloser(bytes.NewReader(data))
-
-	err = json.NewDecoder(bytes.NewReader(data)).Decode(&resp)
-
-	switch resp.StatusCode {
-	case http.StatusUnauthorized:
-		return nil, NewErrQuery("Unauthorized", data, ErrUnauthorized)
-	case http.StatusPaymentRequired:
-		return nil, NewErrQuery("Unauthorized", data, ErrUnauthorized)
-	case http.StatusForbidden:
-		return nil, NewErrQuery("Not allowed", data, ErrForbidden)
-	case http.StatusNotFound:
-		return nil, NewErrQuery("Not found", data, ErrNotFound)
-	default:
-		return nil, NewErrQuery("Other", data, ErrOther)
-	}
+	return
 }
