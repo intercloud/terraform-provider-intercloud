@@ -8,7 +8,7 @@ import (
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/config"
 )
 
-func dataSourceDestinations(allowedFamilies []string) *schema.Resource {
+func dataSourceDestinations() *schema.Resource {
 	return &schema.Resource{
 		Read: dataSourceDestinationsRead,
 		Schema: map[string]*schema.Schema{
@@ -16,7 +16,7 @@ func dataSourceDestinations(allowedFamilies []string) *schema.Resource {
 				Type:         schema.TypeString,
 				ForceNew:     true,
 				Required:     true,
-				ValidateFunc: validation.StringInSlice(allowedFamilies, false),
+				ValidateFunc: validation.StringInSlice([]string{"aws", "awshostedconnection", "azure", "gcp"}, false),
 			},
 			"destinations": {
 				Type:     schema.TypeList,

@@ -18,8 +18,8 @@ func (r Registration) Name() string {
 // SupportedDataSources returns the supported Data Sources supported by this Service
 func (r Registration) SupportedDataSources() map[string]*schema.Resource {
 	return map[string]*schema.Resource{
-		"intercloud_destination":  dataSourceDestination(AllFamilies()),
-		"intercloud_destinations": dataSourceDestinations(AllFamilies()),
+		"intercloud_destination":  dataSourceDestination(),
+		"intercloud_destinations": dataSourceDestinations(),
 	}
 }
 
