@@ -139,7 +139,7 @@ type ConnectorCreate struct {
 }
 
 func (c ConnectorCreate) String() string {
-	b, _ := json.MarshalIndent(c, "ConnectorCreate", "\t")
+	b, _ := json.Marshal(c)
 	return string(b)
 }
 
