@@ -73,7 +73,6 @@ type ReadConnectorInput struct {
 }
 
 type CspRead struct {
-	FamilyID        uuid.UUID        `json:"connectorFamilyID"`
 	DestinationID   uuid.UUID        `json:"cloudDestinationID"`
 	AwsParams       *AwsParams       `json:"aws,omitempty"`
 	AwsHostedParams *AwsHostedParams `json:"awshostedconnection,omitempty"`
@@ -120,7 +119,6 @@ type GcpParams struct {
 }
 
 type CspCreate struct {
-	FamilyID        uuid.UUID        `json:"connectorFamilyID"`
 	DestinationID   uuid.UUID        `json:"cloudDestinationID"`
 	AwsParams       *AwsParams       `json:"aws,omitempty"`
 	AwsHostedParams *AwsHostedParams `json:"awshostedconnection,omitempty"`
@@ -154,10 +152,6 @@ type CreateConnectorOutput struct {
 }
 type DeleteConnectorInput struct {
 	DeleteInput
-}
-
-type ReadDestinationFamiliesOutput struct {
-	Families map[string]uuid.UUID
 }
 
 type ReadLinkInput struct {
@@ -232,8 +226,6 @@ type Client interface {
 	DeleteLink(*DeleteLinkInput) error
 
 	ReadDestinations(*ReadDestinationsInput) (*ReadDestinationsOutput, error)
-
-	ReadDestinationFamilies() (*ReadDestinationFamiliesOutput, error)
 
 	ReadOrganization(in *ReadOrganizationInput) (out *ReadOrganizationOutput, err error)
 	ReadOrganizations(in *ReadOrganizationInput) (out *[]ReadOrganizationOutput, err error)

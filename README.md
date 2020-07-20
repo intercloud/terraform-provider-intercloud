@@ -1,7 +1,7 @@
 Terraform Provider for InterCloud
 ==================
 
-- Website: https://www.terraform.io
+- Website: <https://www.terraform.io>
 - Documentation: See [run documentation website section](#documentation-website)
 <img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-hashicorp.svg" width="600px">
 
@@ -27,8 +27,7 @@ cd scripts/
 ./run-website.sh
 ```
 
-After starting the server, the documentation is available at http://localhost:4567/docs/providers/intercloud
-
+After starting the server, the documentation is available at <http://localhost:4567/docs/providers/intercloud>
 
 Using the provider
 ----------------------
@@ -70,8 +69,6 @@ After installing the `terraform-provider-intercloud` plugin into the terraform t
     └── windows_amd64
         ├── terraform-provider-intercloud_v0.0.1-beta.exe
 ```
-
-
 
 Building the Provider
 ---------------------------

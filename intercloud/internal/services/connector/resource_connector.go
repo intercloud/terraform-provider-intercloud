@@ -118,12 +118,6 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 
 	if destinationID, ok := d.GetOk("destination_id"); ok {
 
-		familiesOut, errA := api.ReadDestinationFamilies()
-
-		if errA != nil {
-			return errA
-		}
-
 		input.Connector.Csp = &client.CspCreate{
 			DestinationID: uuid.MustParse(destinationID.(string)),
 		}
@@ -131,7 +125,6 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 		// connection : aws, aws hosted, azure, gcp
 		connection := findConnection(d)
 		log.Printf("[DEBUG] Connection found for creation (family = %q, connection type = %q)", connection.Family(), connection.ConnectionType())
-		input.Connector.Csp.FamilyID = familiesOut.Families[connection.Family()]
 		familyParams := d.Get(connection.Family()).([]interface{})
 		connectionParams := familyParams[0].(map[string]interface{})
 		switch connection {

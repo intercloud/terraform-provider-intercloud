@@ -6,10 +6,10 @@ terraform {
   required_providers {
     # Build has to be named terraform-provider-intercloud_v0.0.0
     #intercloud = ">= 0.0.0"
-    tls        = "~> 2.1"
-    aws        = "~> 2.58"
-    random     = "~> 2.2"
-    azurerm    = "~> 2.6"
+    tls     = "~> 2.1"
+    aws     = "~> 2.58"
+    random  = "~> 2.2"
+    azurerm = "~> 2.6"
   }
 }
 
@@ -32,10 +32,10 @@ module "ic_azure" {
     azurerm = azurerm.ic
   }
   # module variables
-  tag_name                          = random_pet.tag.id
-  azure_express_route_circuit_name  = var.azure_express_route_circuit_name
-  azure_resource_group_name         = var.azure_resource_group_name
-  ssh_public_key                    = tls_private_key.common.public_key_openssh
+  tag_name                         = random_pet.tag.id
+  azure_express_route_circuit_name = var.azure_express_route_circuit_name
+  azure_resource_group_name        = var.azure_resource_group_name
+  ssh_public_key                   = tls_private_key.common.public_key_openssh
 }
 
 # ------------------------------------------------
