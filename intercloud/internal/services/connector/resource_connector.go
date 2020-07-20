@@ -147,7 +147,6 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 	}
 
 	// @TODO: Get user input organization_id
-
 	resp, err := api.CreateConnector(input)
 
 	if err != nil {
@@ -180,7 +179,7 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 
 	if err != nil {
 		// Delete Resource if not created in those delay
-		_ = resourceConnectorDelete(d, meta)
+		// _ = resourceConnectorDelete(d, meta)
 		d.SetId("")
 		return
 	}
@@ -207,7 +206,7 @@ func resourceConnectorRead(d *schema.ResourceData, meta interface{}) (err error)
 		// @FIXME: not from apiclient
 		if errors.Is(err, apiclient.ErrNotFound) {
 			// Delete from state if Not Found
-			d.SetId("")
+			// d.SetId("")
 			return nil
 		}
 

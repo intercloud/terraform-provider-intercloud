@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -63,8 +64,8 @@ func (c *client) ReadConnector(input *ReadConnectorInput) (output *ReadConnector
 	defer func() {
 		_ = resp.Body.Close()
 	}()
-
 	err = json.NewDecoder(resp.Body).Decode(&output)
+	log.Printf("[DEBUG] read connector (id = %q) response (err = %+v, response = %+v)", input.ID.String(), err, output)
 
 	if err != nil {
 		return nil, err
@@ -74,6 +75,7 @@ func (c *client) ReadConnector(input *ReadConnectorInput) (output *ReadConnector
 }
 
 func (c *client) CreateConnector(input *CreateConnectorInput) (output *CreateConnectorOutput, err error) {
+	log.Printf("[DEBUG] create connector (payload = %+v)", input)
 
 	resp, err := c.apiClient.DoRequest(
 		context.Background(),
@@ -96,6 +98,7 @@ func (c *client) CreateConnector(input *CreateConnectorInput) (output *CreateCon
 	var connector *CreateConnectorResponseApi
 
 	err = json.NewDecoder(resp.Body).Decode(&connector)
+	log.Printf("[DEBUG] create connector response (err = %v, response = %+v)", err, connector)
 
 	if err != nil {
 		return

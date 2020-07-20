@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"errors"
 	"net"
 	"net/http"
@@ -126,6 +127,7 @@ type CspCreate struct {
 	AzureParams     *AzureParams     `json:"azure,omitempty"`
 	GcpParams       *GcpParams       `json:"gcp,omitempty"`
 }
+
 type EnterpriseCreate struct {
 	// @TODO:
 }
@@ -137,6 +139,12 @@ type ConnectorCreate struct {
 	Csp         *CspCreate        `json:"csp,omitempty"`
 	Enterprise  *EnterpriseCreate `json:"enterprise,omitempty"`
 }
+
+func (c ConnectorCreate) String() string {
+	b, _ := json.MarshalIndent(c, "ConnectorCreate", "\t")
+	return string(b)
+}
+
 type CreateConnectorInput struct {
 	CreateInput
 	Connector ConnectorCreate
