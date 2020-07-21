@@ -13,7 +13,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/sethvargo/go-retry"
+	retry "github.com/sethvargo/go-retry"
 )
 
 type Client struct {
@@ -52,6 +52,7 @@ var (
 	ErrNotFound        = errors.New("not found")
 	ErrForbidden       = errors.New("forbidden")
 	ErrOther           = errors.New("other")
+	ErrTooManyRequests = errors.New("too many requests")
 	ErrUnauthorized    = errors.New("unauthorized")
 	ErrPaymentRequired = errors.New("payment required")
 )
@@ -106,8 +107,9 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	var api, path *url.URL
 
 	if ctx == nil {
+		ctx = context.Background()
 		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+		ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.6 = 8.8s
 		defer cancel()
 	}
 
@@ -147,6 +149,7 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	b = retry.WithJitter(500*time.Millisecond, b)
 	b = retry.WithMaxRetries(3, b)
 	err = retry.Do(ctx, b, func(ctx context.Context) error {
+
 		resp, err = c.client.Do(req)
 
 		if err != nil {
@@ -158,14 +161,13 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 		}
 
 		// Never Get Gb of data
-		data, err := ioutil.ReadAll(resp.Body)
+		data, _ := ioutil.ReadAll(resp.Body)
 		resp.Body = ioutil.NopCloser(bytes.NewReader(data))
 		err = json.NewDecoder(bytes.NewReader(data)).Decode(&resp)
-		log.Printf("[DEBUG] response status code = %d", resp.StatusCode)
 		switch resp.StatusCode {
 		case http.StatusTooManyRequests:
-			log.Print("[INFO] rate limit has been hit, waiting before retry")
-			return retry.RetryableError(err)
+			log.Printf("[DEBUG] rate limit has been hit, waiting before next retry")
+			return retry.RetryableError(NewErrQuery("TooManyRequests", data, ErrTooManyRequests))
 		case http.StatusUnauthorized:
 			return NewErrQuery("Unauthorized", data, ErrUnauthorized)
 		case http.StatusPaymentRequired:
@@ -180,6 +182,7 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	})
 
 	if err != nil {
+		log.Printf("[DEBUG] request failure (err = %+v)", err)
 		return nil, err
 	}
 
