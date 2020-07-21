@@ -1,10 +1,10 @@
-variable "intercloud_api_endpoint"  {
+variable "intercloud_api_endpoint" {
   description = "InterCloud provider API endpoint to interact with"
   type        = string
   default     = "https://api-console-lab.intercloud.io"
 }
 
-variable "intercloud_organization_id"  {
+variable "intercloud_organization_id" {
   description = "InterCloud provider organization id to manage"
   type        = string
 }
@@ -16,12 +16,12 @@ variable "aws_region" {
 
 variable "azure_express_route_circuit_name" {
   description = "Azure express circuit name to provision"
-  type = string
+  type        = string
 }
 
 variable "azure_resource_group_name" {
   description = "Azure resource group containing managed resources"
-  type = string
+  type        = string
 }
 
 variable "azure_subscription_id" {
