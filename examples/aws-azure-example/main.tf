@@ -66,9 +66,9 @@ data "intercloud_destination" "aws_destination" {
 }
 
 data "intercloud_destination" "azure_destination" {
-  #location = "equinix ld5 london"
-  location = "equinix am2 amsterdam"
-  family   = "azure"
+  location = "equinix ld5 london"
+  #location = "equinix am2 amsterdam"
+  family = "azure"
 }
 
 resource "intercloud_group" "group_1" {
