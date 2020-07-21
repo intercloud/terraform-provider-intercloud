@@ -109,7 +109,7 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	if ctx == nil {
 		ctx = context.Background()
 		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.6 = 8.8s
+		ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.5 = 8.5s
 		defer cancel()
 	}
 
