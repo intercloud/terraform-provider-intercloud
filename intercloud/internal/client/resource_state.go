@@ -3,10 +3,7 @@ package client
 import (
 	"encoding/json"
 	"errors"
-)
-
-var (
-	ErrInvalidResourceState = errors.New("invalid state")
+	"fmt"
 )
 
 type ResourceState int
@@ -36,7 +33,7 @@ func GetResourceState(s string) (ResourceState, error) {
 			return cs, nil
 		}
 	}
-	return 0, ErrInvalidResourceState
+	return 0, fmt.Errorf("resource state is invalid (state = %q)", s)
 }
 
 func (s ResourceState) String() string {
@@ -58,5 +55,5 @@ func (u ResourceState) MarshalJSON() ([]byte, error) {
 		return json.Marshal(u.String())
 	}
 
-	return nil, ErrInvalidResourceState
+	return nil, errors.New("resource state in invalid")
 }

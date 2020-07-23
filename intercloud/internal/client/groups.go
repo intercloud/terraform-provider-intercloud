@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/api"
@@ -55,15 +54,10 @@ func (c *client) CreateGroup(in *CreateGroupInput) (out *CreateGroupOutput, err 
 
 	err = json.NewDecoder(resp.Body).Decode(&out)
 
-	log.Println(fmt.Sprintf("[WARN] Create out %+s", out))
-	log.Println(fmt.Sprintf("[WARN] Create err %+s", err))
-
 	return
 }
 
 func (c *client) DeleteGroup(in *DeleteGroupInput) (err error) {
-
-	log.Println(fmt.Sprintf("[WARN] DESTROY in %+s", in))
 
 	_, err = c.apiClient.DoRequest(
 		context.Background(),

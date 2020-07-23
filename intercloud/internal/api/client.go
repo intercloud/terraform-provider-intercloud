@@ -7,10 +7,13 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"net/url"
 	"time"
+
+	retry "github.com/sethvargo/go-retry"
 )
 
 type Client struct {
@@ -49,6 +52,7 @@ var (
 	ErrNotFound        = errors.New("not found")
 	ErrForbidden       = errors.New("forbidden")
 	ErrOther           = errors.New("other")
+	ErrTooManyRequests = errors.New("too many requests")
 	ErrUnauthorized    = errors.New("unauthorized")
 	ErrPaymentRequired = errors.New("payment required")
 )
@@ -103,10 +107,11 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	var api, path *url.URL
 
 	if ctx == nil {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
+		ctx = context.Background()
 	}
+	var cancel context.CancelFunc
+	ctx, cancel = context.WithTimeout(ctx, 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.5 = 8.5s
+	defer cancel()
 
 	if path, err = url.Parse(requestPath); err != nil {
 		return nil, err
@@ -139,33 +144,49 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "Intercloud Terraform Provider "+c.userAgents.String())
 
-	resp, err = c.client.Do(req)
+	// exponential backoff mechanism with jitter (+/- 500ms)
+	b, _ := retry.NewExponential(1 * time.Second)
+	b = retry.WithJitter(500*time.Millisecond, b)
+	b = retry.WithMaxRetries(3, b)
+	err = retry.Do(ctx, b, func(ctx context.Context) error {
+
+		resp, err = c.client.Do(req)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			_ = resp.Body.Close()
+		}()
+
+		if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
+			return nil
+		}
+
+		// Never Get Gb of data
+		data, _ := ioutil.ReadAll(resp.Body)
+		resp.Body = ioutil.NopCloser(bytes.NewReader(data))
+		err = json.NewDecoder(bytes.NewReader(data)).Decode(&resp)
+		switch resp.StatusCode {
+		case http.StatusTooManyRequests:
+			log.Printf("[DEBUG] rate limit has been hit, waiting before next retry")
+			return retry.RetryableError(NewErrQuery("TooManyRequests", data, ErrTooManyRequests))
+		case http.StatusUnauthorized:
+			return NewErrQuery("Unauthorized", data, ErrUnauthorized)
+		case http.StatusPaymentRequired:
+			return NewErrQuery("Unauthorized", data, ErrUnauthorized)
+		case http.StatusForbidden:
+			return NewErrQuery("Not allowed", data, ErrForbidden)
+		case http.StatusNotFound:
+			return NewErrQuery("Not found", data, ErrNotFound)
+		default:
+			return NewErrQuery("Other", data, ErrOther)
+		}
+	})
 
 	if err != nil {
-		return
+		log.Printf("[DEBUG] request failure (err = %+v)", err)
+		return nil, err
 	}
 
-	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
-		return
-	}
-
-	// Never Get Gb of data
-	data, err := ioutil.ReadAll(resp.Body)
-
-	resp.Body = ioutil.NopCloser(bytes.NewReader(data))
-
-	err = json.NewDecoder(bytes.NewReader(data)).Decode(&resp)
-
-	switch resp.StatusCode {
-	case http.StatusUnauthorized:
-		return nil, NewErrQuery("Unauthorized", data, ErrUnauthorized)
-	case http.StatusPaymentRequired:
-		return nil, NewErrQuery("Unauthorized", data, ErrUnauthorized)
-	case http.StatusForbidden:
-		return nil, NewErrQuery("Not allowed", data, ErrForbidden)
-	case http.StatusNotFound:
-		return nil, NewErrQuery("Not found", data, ErrNotFound)
-	default:
-		return nil, NewErrQuery("Other", data, ErrOther)
-	}
+	return
 }
