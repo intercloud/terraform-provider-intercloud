@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net"
@@ -155,7 +154,12 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 		if err != nil {
 			return err
 		}
-		defer close(resp.Body)
+		defer func() {
+			err := resp.Body.Close()
+			if err != nil {
+				log.Print("[ERROR] error while closing response body")
+			}
+		}()
 
 		if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 			return nil
@@ -188,11 +192,4 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	}
 
 	return
-}
-
-func close(r io.Closer) {
-	err := r.Close()
-	if err != nil {
-		log.Print("[ERROR] error while closing request body")
-	}
 }
