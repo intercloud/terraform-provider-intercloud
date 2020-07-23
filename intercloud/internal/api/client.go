@@ -155,10 +155,7 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 			return err
 		}
 		defer func() {
-			err = resp.Body.Close()
-			if err != nil {
-				log.Print("[ERROR] error while closing response body")
-			}
+			_ = resp.Body.Close()
 		}()
 
 		if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
