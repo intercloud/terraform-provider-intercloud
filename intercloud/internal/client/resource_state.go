@@ -33,7 +33,7 @@ func GetResourceState(s string) (ResourceState, error) {
 			return cs, nil
 		}
 	}
-	return 0, errors.New(fmt.Sprintf("resource state is invalid (state = %q)", s))
+	return 0, fmt.Errorf("resource state is invalid (state = %q)", s)
 }
 
 func (s ResourceState) String() string {

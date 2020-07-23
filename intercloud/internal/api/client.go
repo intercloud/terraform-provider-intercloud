@@ -110,7 +110,7 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 		ctx = context.Background()
 	}
 	var cancel context.CancelFunc
-	ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.5 = 8.5s
+	ctx, cancel = context.WithTimeout(ctx, 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.5 = 8.5s
 	defer cancel()
 
 	if path, err = url.Parse(requestPath); err != nil {
