@@ -155,7 +155,7 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 			return err
 		}
 		defer func() {
-			err := resp.Body.Close()
+			err = resp.Body.Close()
 			if err != nil {
 				log.Print("[ERROR] error while closing response body")
 			}
