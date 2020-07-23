@@ -108,10 +108,10 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 
 	if ctx == nil {
 		ctx = context.Background()
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.5 = 8.5s
-		defer cancel()
 	}
+	var cancel context.CancelFunc
+	ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.5 = 8.5s
+	defer cancel()
 
 	if path, err = url.Parse(requestPath); err != nil {
 		return nil, err
@@ -151,11 +151,9 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 	err = retry.Do(ctx, b, func(ctx context.Context) error {
 
 		resp, err = c.client.Do(req)
-
 		if err != nil {
 			return err
 		}
-
 		if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 			return nil
 		}
