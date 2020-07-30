@@ -100,11 +100,14 @@ type AwsParams struct {
 }
 
 type AwsHostedParams struct {
-	ASN          uint16 `json:"asNumber"`
-	AwsAccount   int    `json:"awsAccount"`
-	PortSpeed    string `json:"portSpeed"`
-	VlanID       int    `json:"vlanId,omitempty"`
-	ConnectionID string `json:"connectionId,omitempty"`
+	ASN            uint16 `json:"asNumber"`
+	AwsAccount     int    `json:"awsAccount"`
+	AwsPeerIP      string `json:"awsPeerIP,omitempty"`
+	BgpKey         string `json:"bgpKey,omitempty"`
+	ConnectionID   string `json:"connectionId,omitempty"`
+	CustomerPeerIP string `json:"customerPeerIP,omitempty"`
+	PortSpeed      string `json:"portSpeed"`
+	VlanID         int    `json:"vlanId,omitempty"`
 }
 
 type AzureParams struct {

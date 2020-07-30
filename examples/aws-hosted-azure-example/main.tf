@@ -66,8 +66,7 @@ data "intercloud_destination" "aws_destination" {
 
 data "intercloud_destination" "azure_destination" {
   location = "Amsterdam"
-  #location = "equinix am2 amsterdam"
-  family = "azure"
+  family   = "azure"
 }
 
 resource "intercloud_group" "group_1" {

@@ -40,6 +40,19 @@ func ResourceSchemaAws() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
+						"customer_peer_ip": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"aws_peer_ip": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"bgp_key": {
+							Type:      schema.TypeString,
+							Computed:  true,
+							Sensitive: true,
+						},
 					},
 				},
 			},

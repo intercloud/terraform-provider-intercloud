@@ -206,8 +206,6 @@ func resourceConnectorRead(d *schema.ResourceData, meta interface{}) (err error)
 		return
 	}
 
-	log.Println(fmt.Sprintf("[WARN] resourceConnectorRead %+v", output))
-
 	d.Set("name", output.Connector.Name)
 	d.Set("group_id", output.Connector.GroupID.String())
 	d.Set("description", output.Connector.Description)

@@ -202,12 +202,13 @@ func configureViper(credsFile string) error {
 func isAccessTokenValid(config *config.ProviderConfig) (bool, error) {
 	_, err := config.ApiClient().ReadAccountInformations()
 	if err != nil {
+		log.Printf("[DEBUG] error while checking access token validity (err = %+v)", err)
 		uerr := errors.Unwrap(err)
 		switch uerr {
 		case api.ErrUnauthorized, api.ErrForbidden:
-			return false, errors.New("intercloud: provided access token is not valid. Please provide a valid access token.")
+			return false, errors.New("intercloud: provided access token is not valid. Please provide a valid access token")
 		}
-		return false, errors.New("intercloud: access token cannot be verified.")
+		return false, errors.New("intercloud: access token cannot be verified")
 	}
 	return true, nil
 }

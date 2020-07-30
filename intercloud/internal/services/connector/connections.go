@@ -80,6 +80,15 @@ func expandConnectionAwsHostedParams(m map[string]interface{}) *client.AwsHosted
 		if v, ok := hosted["connection_id"]; ok {
 			params.ConnectionID = v.(string)
 		}
+		if v, ok := hosted["customer_peer_ip"]; ok {
+			params.CustomerPeerIP = v.(string)
+		}
+		if v, ok := hosted["aws_peer_ip"]; ok {
+			params.AwsPeerIP = v.(string)
+		}
+		if v, ok := hosted["bgp_key"]; ok {
+			params.BgpKey = v.(string)
+		}
 	}
 
 	return &params
@@ -102,9 +111,12 @@ func flattenConnectionAwsHostedParams(params *client.AwsHostedParams) []interfac
 	result["aws_account_id"] = params.AwsAccount
 
 	hostedConnection := map[string]interface{}{
-		"port_speed":    params.PortSpeed,
-		"vlan_id":       params.VlanID,
-		"connection_id": params.ConnectionID,
+		"port_speed":       params.PortSpeed,
+		"vlan_id":          params.VlanID,
+		"connection_id":    params.ConnectionID,
+		"customer_peer_ip": params.CustomerPeerIP,
+		"aws_peer_ip":      params.AwsPeerIP,
+		"bgp_key":          params.BgpKey,
 	}
 	result["hosted_connection"] = []interface{}{hostedConnection}
 
