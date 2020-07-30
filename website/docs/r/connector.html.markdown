@@ -142,9 +142,16 @@ When managing a AWS connector the following attributes are exposed:
   - `hosted_connection` - (Hosted connection only) Key/value pairs for
   hosted connection exported attributes :
 
-    - `vlan_id` - VLAN ID.
+     - `vlan_id` - VLAN ID.
 
-    - `connection_id` - Hosted connection ID.
+     - `connection_id` - Hosted connection ID (e.g. `dxcon-fg31dyv6`).
+
+     - `aws_peer_ip` - Amazon router peer IP to use when [creating a virtual interface ("Your router peer ip" field)](https://docs.aws.amazon.com/directconnect/latest/UserGuide/create-vif.html) on the hosted connection (e.g. `169.254.0.1`)
+
+     - `customer_peer_ip` - Customer router peer IP to use when [creating a virtual interface ("Amazon router peer ip" field)](https://docs.aws.amazon.com/directconnect/latest/UserGuide/create-vif.html) on the hosted connection (e.g. `169.254.0.2`).
+
+     - `bgp_key` - BGP authentication key to use when [creating a virtual interface ("BGP authentication key" field)](https://docs.aws.amazon.com/directconnect/latest/UserGuide/create-vif.html) on the hosted connection.
+
 
 When managing a GCP connector the following attributes are exposed:
 
