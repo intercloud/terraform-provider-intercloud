@@ -27,7 +27,7 @@ List AWS destinations for an hosted connection.
 
 ```hcl
 data "intercloud_destinations" "aws_hosted_connection_destinations" {
-  family = "awshostedconnections"
+  family = "awshostedconnection"
 }
 ```
 
