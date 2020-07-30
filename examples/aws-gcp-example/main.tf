@@ -61,9 +61,7 @@ data "intercloud_destinations" "dest_gcp" {
 
 
 data "intercloud_destination" "aws_destination" {
-  #location = "eircom dublin"
-  #location = "telehouse tsh london"
-  location = "telehouse tsh london (eu-west-1)"
+  location = "telehouse tsh london"
   family   = "aws"
 }
 
