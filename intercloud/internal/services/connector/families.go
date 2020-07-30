@@ -1,21 +1,17 @@
 package connector
 
-type Family int
+type CspFamily int
 
 const (
-	FamilyAws Family = iota
-	FamilyAzure
-	FamilyGcp
+	CspFamilyAws CspFamily = iota
+	CspFamilyAzure
+	CspFamilyGcp
 )
 
 var (
-	sliceFamilies = []string{"aws", "azure", "gcp"}
+	sliceCspFamilies = []string{"aws", "azure", "gcp"}
 )
 
-func (f Family) String() string {
-	return sliceFamilies[f]
-}
-
-func AllFamilies() []string {
-	return sliceFamilies
+func (f CspFamily) String() string {
+	return sliceCspFamilies[f]
 }

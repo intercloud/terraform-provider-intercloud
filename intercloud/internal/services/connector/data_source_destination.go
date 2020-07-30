@@ -46,7 +46,7 @@ func dataSourceDestination() *schema.Resource {
 				Type:         schema.TypeString,
 				ForceNew:     true,
 				Required:     true,
-				ValidateFunc: validation.StringInSlice([]string{"aws", "awshostedconnection", "azure", "gcp"}, false),
+				ValidateFunc: validation.StringInSlice(AllConnectionsFamiliesNames(), false),
 			},
 		},
 	}

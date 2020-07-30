@@ -175,7 +175,7 @@ func getProviderAccessToken(d *schema.ResourceData) (access_token string, err er
 		credsFile = userFile.(string)
 	}
 	if err := configureViper(credsFile); err != nil {
-		return "", errors.New("intercloud: could not read shared credentials file. See the provider configuration documentation more information.")
+		return "", errors.New("intercloud: no access token found in environment variable or shared credentials file. See the provider configuration documentation more information.")
 	}
 	if access_token := viper.GetString("access_token"); access_token == "" {
 		return "", errors.New("intercloud: could not find default credentials. See the provider configuration documentation more information.")

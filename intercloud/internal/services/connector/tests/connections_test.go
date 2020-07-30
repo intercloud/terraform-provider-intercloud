@@ -9,35 +9,41 @@ import (
 func TestConnections_Content(t *testing.T) {
 	// tests cases declaration
 	cases := []struct {
-		connection             connector.Connection
-		expectedFamily         string
+		connection             connector.ConnectionFamily
+		expectedCspFamily      string
 		expectedConnectionType string
+		expectedName           string
 	}{
 		{
-			connection:     connector.ConnectionAws,
-			expectedFamily: "aws",
+			connection:        connector.ConnectionFamilyAws,
+			expectedCspFamily: "aws",
+			expectedName:      "aws",
 		},
 		{
-			connection:             connector.ConnectionAwsHosted,
-			expectedFamily:         "aws",
+			connection:             connector.ConnectionFamilyAwsHosted,
+			expectedCspFamily:      "aws",
 			expectedConnectionType: "hosted_connection",
+			expectedName:           "awshostedconnection",
 		},
 		{
-			connection:     connector.ConnectionAzure,
-			expectedFamily: "azure",
+			connection:        connector.ConnectionFamilyAzure,
+			expectedCspFamily: "azure",
+			expectedName:      "azure",
 		},
 		{
-			connection:     connector.ConnectionGcp,
-			expectedFamily: "gcp",
+			connection:        connector.ConnectionFamilyGcp,
+			expectedCspFamily: "gcp",
+			expectedName:      "gcp",
 		},
 	}
 
 	// check tests cases
 	for _, tc := range cases {
-		outputFamily := tc.connection.Family()
+		outputFamily := tc.connection.CspFamily()
 		outputConnectionType := tc.connection.ConnectionType()
-		if outputFamily != tc.expectedFamily || outputConnectionType != tc.expectedConnectionType {
-			t.Fatalf("The connection data are not equal (connection = %q, expected family = %q, actual family = %q, expected type = %q, actual type = %q)", tc.connection, tc.expectedFamily, outputFamily, tc.expectedConnectionType, outputConnectionType)
+		outputName := tc.connection.String()
+		if outputFamily != tc.expectedCspFamily || outputConnectionType != tc.expectedConnectionType || outputName != tc.expectedName {
+			t.Fatalf("The connection data are not equal (connection = %q, expected family = %q, current family = %q, expected type = %q, current type = %q, expected name = %q, current name = %q)", tc.connection, tc.expectedCspFamily, outputFamily, tc.expectedConnectionType, outputConnectionType, outputName, tc.expectedName)
 		}
 	}
 
