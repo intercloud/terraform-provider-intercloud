@@ -10,6 +10,7 @@ terraform {
     aws     = "~> 2.58"
     random  = "~> 2.2"
     azurerm = "~> 2.6"
+
   }
 }
 
@@ -50,7 +51,7 @@ resource "tls_private_key" "common" {
 
 
 data "intercloud_destinations" "dest_aws" {
-  family = "aws"
+  family = "awshostedconnection"
 }
 
 data "intercloud_destinations" "dest_azure" {
@@ -59,15 +60,12 @@ data "intercloud_destinations" "dest_azure" {
 
 
 data "intercloud_destination" "aws_destination" {
-  #location = "eircom dublin"
-  #location = "telehouse tsh london"
-  location = "telehouse tsh london (eu-west-1)"
-  family   = "aws"
+  location = "Ireland"
+  family   = "awshostedconnection"
 }
 
 data "intercloud_destination" "azure_destination" {
-  #location = "equinix ld5 london"
-  location = "equinix am2 amsterdam"
+  location = "Amsterdam"
   family   = "azure"
 }
 

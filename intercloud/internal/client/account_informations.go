@@ -3,6 +3,8 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"log"
+	"net/http"
 )
 
 // ReadAccountInformations reads informations of the current logged in user
@@ -10,7 +12,8 @@ func (c *client) ReadAccountInformations() (out *ReadAccountInformations, err er
 
 	resp, err := c.apiClient.DoRequest(
 		context.Background(),
-		"GET", "/me/info",
+		http.MethodGet,
+		"/me/info",
 		nil,
 		"",
 		nil,
@@ -24,6 +27,10 @@ func (c *client) ReadAccountInformations() (out *ReadAccountInformations, err er
 	}()
 
 	err = json.NewDecoder(resp.Body).Decode(&out)
+	log.Printf("[DEBUG] account informations (infos = %+v, err = %+v)", out, err)
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	return out, nil
 }

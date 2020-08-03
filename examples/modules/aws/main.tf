@@ -92,7 +92,7 @@ resource "aws_main_route_table_association" "mrtb" {
 
 # configure ssh access via public key authentication
 resource "aws_key_pair" "key_pair" {
-  key_name   = "aws-provider"
+  key_name   = "aws-provider-${var.tag_name}"
   public_key = var.ssh_public_key
 }
 

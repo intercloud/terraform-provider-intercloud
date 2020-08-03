@@ -124,23 +124,22 @@ func resourceConnectorCreate(d *schema.ResourceData, meta interface{}) (err erro
 
 		// connection : aws, aws hosted, azure, gcp
 		connection := findConnection(d)
-		log.Printf("[DEBUG] Connection found for creation (family = %q, connection type = %q)", connection.Family(), connection.ConnectionType())
-		familyParams := d.Get(connection.Family()).([]interface{})
+		log.Printf("[DEBUG] Connection found for creation (family = %q, connection type = %q)", connection.CspFamily(), connection.ConnectionType())
+		familyParams := d.Get(connection.CspFamily()).([]interface{})
 		connectionParams := familyParams[0].(map[string]interface{})
 		switch connection {
-		case ConnectionAws:
+		case ConnectionFamilyAws:
 			input.Connector.Csp.AwsParams = expandConnectionAwsParams(connectionParams)
-		case ConnectionAwsHosted:
+		case ConnectionFamilyAwsHosted:
 			input.Connector.Csp.AwsHostedParams = expandConnectionAwsHostedParams(connectionParams)
-		case ConnectionAzure:
+		case ConnectionFamilyAzure:
 			input.Connector.Csp.AzureParams = expandConnectionAzureParams(connectionParams)
-		case ConnectionGcp:
+		case ConnectionFamilyGcp:
 			input.Connector.Csp.GcpParams = expandConnectionGcpParams(connectionParams)
 		}
 	}
 
 	// @TODO: Get user input organization_id
-
 	resp, err := api.CreateConnector(input)
 
 	if err != nil {
@@ -207,8 +206,6 @@ func resourceConnectorRead(d *schema.ResourceData, meta interface{}) (err error)
 		return
 	}
 
-	log.Println(fmt.Sprintf("[WARN] resourceConnectorRead %+v", output))
-
 	d.Set("name", output.Connector.Name)
 	d.Set("group_id", output.Connector.GroupID.String())
 	d.Set("description", output.Connector.Description)
@@ -220,26 +217,26 @@ func resourceConnectorRead(d *schema.ResourceData, meta interface{}) (err error)
 		switch {
 		case output.Connector.Csp.AwsParams != nil:
 			{
-				if err := d.Set(FamilyAws.String(), flattenConnectionAwsParams(output.Connector.Csp.AwsParams)); err != nil {
-					return fmt.Errorf("Error setting `%q`: %+v", FamilyAws.String(), err)
+				if err := d.Set(CspFamilyAws.String(), flattenConnectionAwsParams(output.Connector.Csp.AwsParams)); err != nil {
+					return fmt.Errorf("Error setting `%q`: %+v", CspFamilyAws.String(), err)
 				}
 			}
 		case output.Connector.Csp.AwsHostedParams != nil:
 			{
-				if err := d.Set(FamilyAws.String(), flattenConnectionAwsHostedParams(output.Connector.Csp.AwsHostedParams)); err != nil {
-					return fmt.Errorf("Error setting `%q`: %+v", FamilyAws.String(), err)
+				if err := d.Set(CspFamilyAws.String(), flattenConnectionAwsHostedParams(output.Connector.Csp.AwsHostedParams)); err != nil {
+					return fmt.Errorf("Error setting `%q`: %+v", CspFamilyAws.String(), err)
 				}
 			}
 		case output.Connector.Csp.AzureParams != nil:
 			{
-				if err := d.Set(FamilyAzure.String(), flattenConnectionAzureParams(output.Connector.Csp.AzureParams)); err != nil {
-					return fmt.Errorf("Error setting `%q`: %+v", FamilyAzure.String(), err)
+				if err := d.Set(CspFamilyAzure.String(), flattenConnectionAzureParams(output.Connector.Csp.AzureParams)); err != nil {
+					return fmt.Errorf("Error setting `%q`: %+v", CspFamilyAzure.String(), err)
 				}
 			}
 		case output.Connector.Csp.GcpParams != nil:
 			{
-				if err := d.Set(FamilyGcp.String(), flattenConnectionGcpParams(output.Connector.Csp.GcpParams)); err != nil {
-					return fmt.Errorf("Error setting `%q`: %+v", FamilyGcp.String(), err)
+				if err := d.Set(CspFamilyGcp.String(), flattenConnectionGcpParams(output.Connector.Csp.GcpParams)); err != nil {
+					return fmt.Errorf("Error setting `%q`: %+v", CspFamilyGcp.String(), err)
 				}
 			}
 		}
@@ -269,12 +266,12 @@ func resourceConnectorUpdate(d *schema.ResourceData, meta interface{}) error {
 	return resourceConnectorRead(d, meta)
 }
 
-func findConnection(d *schema.ResourceData) Connection {
-	allConnections := AllConnections()
-	var result Connection
+func findConnection(d *schema.ResourceData) ConnectionFamily {
+	allConnections := AllConnectionsFamilies()
+	var result ConnectionFamily
 	for _, connection := range allConnections {
 		// check presence of family inside resource
-		if v, ok := d.GetOk(connection.Family()); ok && len(v.([]interface{})) > 0 {
+		if v, ok := d.GetOk(connection.CspFamily()); ok && len(v.([]interface{})) > 0 {
 			// no specific connection type
 			if connection.ConnectionType() == "" {
 				result = connection

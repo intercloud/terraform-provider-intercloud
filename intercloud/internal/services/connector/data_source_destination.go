@@ -28,12 +28,12 @@ func NewDataSourceDestinationError(err error) error {
 }
 
 var (
-	ErrDestinationNilResponse = errors.New("Nil response")
-	ErrDestinationNone        = errors.New("No destination")
-	ErrDestinationTooMany     = errors.New("Too many destinations")
+	ErrDestinationNilResponse = errors.New("No response from the server")
+	ErrDestinationNone        = errors.New("No destination has been found with the given parameters")
+	ErrDestinationTooMany     = errors.New("Too many destinations found with the given parameters")
 )
 
-func dataSourceDestination(allowedFamilies []string) *schema.Resource {
+func dataSourceDestination() *schema.Resource {
 	return &schema.Resource{
 		Read: dataSourceDestinationRead,
 		Schema: map[string]*schema.Schema{
@@ -46,7 +46,7 @@ func dataSourceDestination(allowedFamilies []string) *schema.Resource {
 				Type:         schema.TypeString,
 				ForceNew:     true,
 				Required:     true,
-				ValidateFunc: validation.StringInSlice(allowedFamilies, false),
+				ValidateFunc: validation.StringInSlice(AllConnectionsFamiliesNames(), false),
 			},
 		},
 	}

@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"errors"
 	"net"
 	"net/http"
@@ -99,11 +100,14 @@ type AwsParams struct {
 }
 
 type AwsHostedParams struct {
-	ASN          uint16 `json:"asNumber"`
-	AwsAccount   int    `json:"awsAccount"`
-	PortSpeed    string `json:"portSpeed"`
-	VlanID       int    `json:"vlanId,omitempty"`
-	ConnectionID string `json:"connectionId,omitempty"`
+	ASN            uint16 `json:"asNumber"`
+	AwsAccount     int    `json:"awsAccount"`
+	AwsPeerIP      string `json:"awsPeerIP,omitempty"`
+	BgpKey         string `json:"bgpKey,omitempty"`
+	ConnectionID   string `json:"connectionId,omitempty"`
+	CustomerPeerIP string `json:"customerPeerIP,omitempty"`
+	PortSpeed      string `json:"portSpeed"`
+	VlanID         int    `json:"vlanId,omitempty"`
 }
 
 type AzureParams struct {
@@ -124,6 +128,7 @@ type CspCreate struct {
 	AzureParams     *AzureParams     `json:"azure,omitempty"`
 	GcpParams       *GcpParams       `json:"gcp,omitempty"`
 }
+
 type EnterpriseCreate struct {
 	// @TODO:
 }
@@ -135,6 +140,12 @@ type ConnectorCreate struct {
 	Csp         *CspCreate        `json:"csp,omitempty"`
 	Enterprise  *EnterpriseCreate `json:"enterprise,omitempty"`
 }
+
+func (c ConnectorCreate) String() string {
+	b, _ := json.Marshal(c)
+	return string(b)
+}
+
 type CreateConnectorInput struct {
 	CreateInput
 	Connector ConnectorCreate

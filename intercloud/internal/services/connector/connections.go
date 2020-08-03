@@ -8,39 +8,51 @@ import (
 	"github.com/intercloud/terraform-provider-intercloud/intercloud/internal/services/connector/csp/gcp"
 )
 
-type Connection int
+type ConnectionFamily int
 
 const (
-	ConnectionAws Connection = iota
-	ConnectionAwsHosted
-	ConnectionAzure
-	ConnectionGcp
+	ConnectionFamilyAws ConnectionFamily = iota
+	ConnectionFamilyAwsHosted
+	ConnectionFamilyAzure
+	ConnectionFamilyGcp
 )
 
-type connectionData struct {
-	family         string
-	connectionType string
+type connectionFamilyData struct {
+	name              string
+	cspFamily         string
+	cspConnectionType string
 }
 
 var (
-	sliceConnections = []connectionData{
-		{family: FamilyAws.String()},
-		{family: FamilyAws.String(), connectionType: "hosted_connection"},
-		{family: FamilyAzure.String()},
-		{family: FamilyGcp.String()},
+	sliceConnectionsFamilies = []connectionFamilyData{
+		{name: "aws", cspFamily: CspFamilyAws.String()},
+		{name: "awshostedconnection", cspFamily: CspFamilyAws.String(), cspConnectionType: "hosted_connection"},
+		{name: "azure", cspFamily: CspFamilyAzure.String()},
+		{name: "gcp", cspFamily: CspFamilyGcp.String()},
 	}
 )
 
-func (c Connection) Family() string {
-	return sliceConnections[c].family
+func (c ConnectionFamily) CspFamily() string {
+	return sliceConnectionsFamilies[c].cspFamily
 }
 
-func (c Connection) ConnectionType() string {
-	return sliceConnections[c].connectionType
+func (c ConnectionFamily) ConnectionType() string {
+	return sliceConnectionsFamilies[c].cspConnectionType
 }
 
-func AllConnections() []Connection {
-	return []Connection{ConnectionAws, ConnectionAwsHosted, ConnectionAzure, ConnectionGcp}
+func (c ConnectionFamily) String() string {
+	return sliceConnectionsFamilies[c].name
+}
+
+func AllConnectionsFamilies() []ConnectionFamily {
+	return []ConnectionFamily{ConnectionFamilyAws, ConnectionFamilyAwsHosted, ConnectionFamilyAzure, ConnectionFamilyGcp}
+}
+func AllConnectionsFamiliesNames() []string {
+	names := make([]string, len(sliceConnectionsFamilies))
+	for i := range sliceConnectionsFamilies {
+		names[i] = sliceConnectionsFamilies[i].name
+	}
+	return names
 }
 
 func expandConnectionAwsParams(m map[string]interface{}) *client.AwsParams {
@@ -80,6 +92,15 @@ func expandConnectionAwsHostedParams(m map[string]interface{}) *client.AwsHosted
 		if v, ok := hosted["connection_id"]; ok {
 			params.ConnectionID = v.(string)
 		}
+		if v, ok := hosted["customer_peer_ip"]; ok {
+			params.CustomerPeerIP = v.(string)
+		}
+		if v, ok := hosted["aws_peer_ip"]; ok {
+			params.AwsPeerIP = v.(string)
+		}
+		if v, ok := hosted["bgp_key"]; ok {
+			params.BgpKey = v.(string)
+		}
 	}
 
 	return &params
@@ -102,9 +123,12 @@ func flattenConnectionAwsHostedParams(params *client.AwsHostedParams) []interfac
 	result["aws_account_id"] = params.AwsAccount
 
 	hostedConnection := map[string]interface{}{
-		"port_speed":    params.PortSpeed,
-		"vlan_id":       params.VlanID,
-		"connection_id": params.ConnectionID,
+		"port_speed":       params.PortSpeed,
+		"vlan_id":          params.VlanID,
+		"connection_id":    params.ConnectionID,
+		"customer_peer_ip": params.CustomerPeerIP,
+		"aws_peer_ip":      params.AwsPeerIP,
+		"bgp_key":          params.BgpKey,
 	}
 	result["hosted_connection"] = []interface{}{hostedConnection}
 

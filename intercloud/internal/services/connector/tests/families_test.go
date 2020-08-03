@@ -9,19 +9,19 @@ import (
 func TestFamilies_String(t *testing.T) {
 	// tests cases declaration
 	cases := []struct {
-		family   connector.Family
+		family   connector.CspFamily
 		expected string
 	}{
 		{
-			family:   connector.FamilyAws,
+			family:   connector.CspFamilyAws,
 			expected: "aws",
 		},
 		{
-			family:   connector.FamilyAzure,
+			family:   connector.CspFamilyAzure,
 			expected: "azure",
 		},
 		{
-			family:   connector.FamilyGcp,
+			family:   connector.CspFamilyGcp,
 			expected: "gcp",
 		},
 	}

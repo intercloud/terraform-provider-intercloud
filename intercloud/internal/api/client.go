@@ -110,7 +110,7 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 		ctx = context.Background()
 	}
 	var cancel context.CancelFunc
-	ctx, cancel = context.WithTimeout(ctx, 10*time.Second) // max backoff retries = 1 + 2 + 4 + 3 * 0.5 = 8.5s
+	ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
 
 	if path, err = url.Parse(requestPath); err != nil {
@@ -158,13 +158,12 @@ func (c *Client) DoRequest(ctx context.Context, method, requestPath string, body
 			_ = resp.Body.Close()
 		}()
 
+		data, _ := ioutil.ReadAll(resp.Body)
+		resp.Body = ioutil.NopCloser(bytes.NewReader(data))
 		if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 			return nil
 		}
 
-		// Never Get Gb of data
-		data, _ := ioutil.ReadAll(resp.Body)
-		resp.Body = ioutil.NopCloser(bytes.NewReader(data))
 		err = json.NewDecoder(bytes.NewReader(data)).Decode(&resp)
 		switch resp.StatusCode {
 		case http.StatusTooManyRequests:

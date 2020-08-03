@@ -23,11 +23,35 @@ data "intercloud_destinations" "aws_destinations" {
 }
 ```
 
+List AWS destinations for an hosted connection.
+
+```hcl
+data "intercloud_destinations" "aws_hosted_connection_destinations" {
+  family = "awshostedconnection"
+}
+```
+
+List Azure destinations.
+
+```hcl
+data "intercloud_destinations" "azure_destinations" {
+  family = "azure"
+}
+```
+
+List Google destinations.
+
+```hcl
+data "intercloud_destinations" "gcp_destinations" {
+  family = "gcp"
+}
+```
+
 ## Argument Reference
 
 The following arguments are supported:
 
-- `family` - (Required) The cloud provider family ( `aws`, `azure` or `gcp`).
+- `family` - (Required) The cloud provider family ( `aws`, `awshostedconnection`, `azure` or `gcp`).
 
 ## Attributes Reference
 

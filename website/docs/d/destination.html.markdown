@@ -24,6 +24,15 @@ data "intercloud_destination" "aws_ireland" {
 }
 ```
 
+Get details about an AWS destination for an hosted connection.
+
+```hcl
+data "intercloud_destination" "aws_hosted_connection_ireland" {
+  family= "awshostedconnection"
+  location = "Ireland"
+}
+```
+
 Get details about an Azure destination.
 
 ```hcl
