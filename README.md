@@ -91,6 +91,8 @@ Installing the Provider
 If you wish to build and automatically install the `terraform-provider-intercloud` into third party plugins from a source code version.
 
 ```sh
+# install cross compilation tools (to be done only once)
+$ make tools
 # replace <VERSION> with the plugin version, e.g. "0.0.1"
 $ PROVIDER_VERSION=<VERSION> make install
  ```
