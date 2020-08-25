@@ -107,3 +107,11 @@ Temporary Items
 
 *.env
 *.tfvars
+
+dist/
+
+/.env
+/.actrc
+/.secrets
+/event*.json
+/*.key
