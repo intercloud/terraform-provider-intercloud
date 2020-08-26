@@ -137,16 +137,16 @@ In addition to [generic `provider` arguments](https://www.terraform.io/docs/conf
 - `api_endpoint` - (Optional) This is the customizable api endpoint. It can also
   be sourced from the `INTERCLOUD_API_ENDPOINT` environment variable.
 
-
 ## Rate limits strategy
+
 InterCloud REST API is protected by a rate limiter.
 
 In order to properly handle rate limits, an exponential backoff strategy is implemented in this plugin.
 
 The strategy works like this:
 
-* If the rate limit is hit, a maximum of 3 retries is done
-* The elapsed time between each retry is exponential (1s -> 2s -> 4s)
-* A jitter of +/- 500ms is added in order to not retry all the failed requests at the same time
+- If the rate limit is hit, a maximum of 3 retries is done
+- The elapsed time between each retry is exponential (1s -> 2s -> 4s)
+- A jitter of +/- 500ms is added in order to not retry all the failed requests at the same time
 
 This strategy is sufficient to ensure that all HTTP requests made on InterCloud REST API succeed without any error due to rate limits.

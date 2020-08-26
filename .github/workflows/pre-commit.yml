@@ -1,4 +1,4 @@
-name: pre-commit
+name: Run pre-commit hook push
 
 on:
   pull_request:
@@ -6,9 +6,12 @@ on:
     branches: [master]
 
 jobs:
-  pre-commit:
+  check-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v2
-      - uses: pre-commit/action@v2.0.0
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+      - name: Run pre-commit
+        uses: pre-commit/action@v2.0.0

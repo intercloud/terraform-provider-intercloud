@@ -107,6 +107,7 @@ Temporary Items
 
 *.env
 *.tfvars
+*.tfvars.json
 
 dist/
 

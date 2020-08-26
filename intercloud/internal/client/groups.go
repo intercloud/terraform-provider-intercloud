@@ -59,7 +59,7 @@ func (c *client) CreateGroup(in *CreateGroupInput) (out *CreateGroupOutput, err 
 
 func (c *client) DeleteGroup(in *DeleteGroupInput) (err error) {
 
-	_, err = c.apiClient.DoRequest(
+	resp, err := c.apiClient.DoRequest(
 		context.Background(),
 		http.MethodDelete,
 		"/groups/"+in.ID.String(),
@@ -67,5 +67,9 @@ func (c *client) DeleteGroup(in *DeleteGroupInput) (err error) {
 		in.OrganizationID.String(),
 		nil,
 	)
+
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 	return err
 }
