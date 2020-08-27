@@ -2,10 +2,10 @@
 # terraform configuration
 # ------------------------------------------------
 terraform {
-  required_version = ">= 0.12.0"
+  required_version = ">= 0.12.0, <0.13.0"
   required_providers {
     # Build has to be named terraform-provider-intercloud_v0.0.0
-    #intercloud = ">= 0.0.0"
+    #intercloud = "1.1.0-SNAPSHOT-856ce91"
     tls     = "~> 2.1"
     aws     = "~> 2.58"
     random  = "~> 2.2"

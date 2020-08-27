@@ -1,0 +1,17 @@
+name: Lint commit messages
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  check-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Checking commit messages
+        uses: wagoid/commitlint-github-action@v2

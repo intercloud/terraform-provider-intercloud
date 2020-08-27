@@ -1,22 +1,20 @@
-Terraform Provider for InterCloud
-==================
+# Terraform Provider for InterCloud
 
 - Website: <https://www.terraform.io>
 - Documentation: See [run documentation website section](#documentation-website)
+  
 <img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-hashicorp.svg" width="600px">
 
-Maintainers
------------
+## Maintainers
 
 This provider plugin is maintained by the InterCloud team at [InterCloud](https://intercloud.com)
 
-Requirements
-------------
+## Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) 0.12+
+- [Go](https://golang.org/doc/install) 1.14 (to build the provider plugin)
 
-Documentation website
-----------------------
+## Documentation website
 
 The documentation is currently not availbale on the public Terraform documentation, this will be done in the future.
 
@@ -29,49 +27,72 @@ cd scripts/
 
 After starting the server, the documentation is available at <http://localhost:4567/docs/providers/intercloud>
 
-Using the provider
-----------------------
+------------------------------
 
-## 3rd Party plugin installation
+## Using the provider from releases binaries
 
-For using the `terraform-provider-intercloud` plugin, the plugin versions need to be present into the terraform third-party plugins directory.
+Go to [releases download page](https://github.com/intercloud/terraform-provider-intercloud/releases)
+
+Download the right archive from the assets depending on your OS and Arch
+
+Unzip and move the binary in :
 
 | OS                | Location                        |
 |-------------------|:--------------------------------|
 | Windows           | %APPDATA%\terraform.d\plugins   |
 | All other systems | ~/.terraform.d/plugins          |
 
-More information about this can be found [here](https://www.terraform.io/docs/configuration/providers.html#third-party-plugins).
+:warning: Terraform 0.13 use `source` to make the path to the binary
 
-The `terraform-provider-intercloud` plugin supports multiple platforms (`linux/amd64`, `darwin/amd64`, `windows/amd64` and so on).
+------------------------------
 
-If you already downloaded the plugin binaries (one binary per platform), just copy the binaries it into the plugins directory.
+## Using the provider from source
 
-If you want to build and install the plugin, follow the next steps.
+### Terraform 0.12.*
 
-After installing the `terraform-provider-intercloud` plugin into the terraform third-party plugins directory will look like this :
-
-```
-.terraform.d
-└── plugins
-    ├── darwin_386
-    │   ├── terraform-provider-intercloud_v0.0.1-beta
-    ├── darwin_amd64
-    │   ├── terraform-provider-intercloud_v0.0.1-beta
-    .
-    ├── linux_386
-    │   ├── terraform-provider-intercloud_v0.0.1-beta
-    ├── linux_amd64
-    │   ├── terraform-provider-intercloud_v0.0.1-beta
-    .
-    ├── windows_386
-    │   ├── terraform-provider-intercloud_v0.0.1-beta.exe
-    └── windows_amd64
-        ├── terraform-provider-intercloud_v0.0.1-beta.exe
+```sh
+make release-snapshot
+## Move/Copy the right binary depending of your {OS}_{Arch} from ./dist to the root of your hcl files
+## IE with darwin_amd64
+mv ./dist/terraform-provider-intercloud_darwin_amd64/terraform-provider-intercloud_v1.1.0-SNAPSHOT-783c762 ~/my-tf-plan-ie/
+cd ~/my-tf-plan-ie
+terraform init
+terraform plan
+terraform apply
 ```
 
-Building the Provider
----------------------------
+Windows OS User:
+
+```powershell
+# Execute those commands only the first time
+go install github.com/goreleaser/goreleaser
+go mod tidy
+
+# Then
+goreleaser build --rm-dist --snapshot
+# mv ./dist/terraform-provider-intercloud_windows_amd64/terraform-provider-intercloud_v1.1.0-SNAPSHOT-783c762.exe E:\my-tf-plan-ie\terraform-provider-intercloud_v1.1.0-SNAPSHOT-783c762.exe
+Move-Item -Path ./dist/terraform-provider-intercloud_windows_amd64/terraform-provider-intercloud_v1.1.0-SNAPSHOT-783c762.exe -Destination E:\my-tf-plan-ie\terraform-provider-intercloud_v1.1.0-SNAPSHOT-783c762.exe
+E:\my-tf-plan-ie
+terraform init
+terraform plan
+terraform apply
+
+```
+
+The provider can also be moved to one of those directories:
+
+| OS                | Location                        |
+|-------------------|:--------------------------------|
+| Windows           | %APPDATA%\terraform.d\plugins   |
+| All other systems | ~/.terraform.d/plugins          |
+
+### Terraform 0.13.*
+
+- Coming soon
+
+------------------------------
+
+## Building the Provider
 
 If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.14+ is *required*).
 You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
@@ -85,14 +106,10 @@ $ $GOPATH/bin/terraform-provider-intercloud
 ...
 ```
 
-Installing the Provider
----------------------------
+------------------------------
 
-If you wish to build and automatically install the `terraform-provider-intercloud` into third party plugins from a source code version.
+## Examples
 
-```sh
-# install cross compilation tools (to be done only once)
-$ make tools
-# replace <VERSION> with the plugin version, e.g. "0.0.1"
-$ PROVIDER_VERSION=<VERSION> make install
- ```
+Some terraform 0.12 projects are available at [./examples/terraform0.12](?/../examples/terraform0.12)
+
+Examples with terraform 0.13 are coming soon.
