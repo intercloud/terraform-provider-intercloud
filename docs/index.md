@@ -1,6 +1,5 @@
 ---
 layout: 'intercloud'
-page_title: 'Provider: InterCloud'
 description: |-
   The InterCloud provider is used to configure your InterCloud infrastructure.
 ---
