@@ -14,19 +14,6 @@ This provider plugin is maintained by the InterCloud team at [InterCloud](https:
 - [Terraform](https://www.terraform.io/downloads.html) 0.12+
 - [Go](https://golang.org/doc/install) 1.14 (to build the provider plugin)
 
-## Documentation website
-
-The documentation is currently not availbale on the public Terraform documentation, this will be done in the future.
-
-The documentation is available by locally running the documentation website.
-
-```bash
-cd scripts/
-./run-website.sh
-```
-
-After starting the server, the documentation is available at <http://localhost:4567/docs/providers/intercloud>
-
 ------------------------------
 
 ## Using the provider from releases binaries
@@ -48,7 +35,7 @@ Unzip and move the binary in :
 
 ## Using the provider from source
 
-### Terraform 0.12.*
+### Terraform 0.12
 
 ```sh
 make release-snapshot
@@ -86,7 +73,7 @@ The provider can also be moved to one of those directories:
 | Windows           | %APPDATA%\terraform.d\plugins   |
 | All other systems | ~/.terraform.d/plugins          |
 
-### Terraform 0.13.*
+### Terraform 0.13
 
 - Coming soon
 

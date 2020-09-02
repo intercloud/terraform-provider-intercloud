@@ -1,6 +1,5 @@
 ---
 layout: 'intercloud'
-page_title: 'Provider: InterCloud'
 description: |-
   The InterCloud provider is used to configure your InterCloud infrastructure.
 ---
@@ -139,9 +138,9 @@ In addition to [generic `provider` arguments](https://www.terraform.io/docs/conf
 
 ## Rate limits strategy
 
-InterCloud REST API is protected by a rate limiter.
+A rate limiter protects the InterCloud REST API.
 
-In order to properly handle rate limits, an exponential backoff strategy is implemented in this plugin.
+In order to properly handle rate limits, this plugin implements an exponential backoff strategy.
 
 The strategy works like this:
 

@@ -1,12 +1,11 @@
 ---
-subcategory: 'CONNECTOR'
+subcategory: 'Connector'
 layout: 'intercloud'
-page_title: 'InterCloud: intercloud_destination'
 description: |-
   Provides details about a specific InterCloud destination
 ---
 
-# Data Source: intercloud_destination
+# intercloud_destination Data Source
 
 Provide details about a specific InterCloud CSP (Cloud Solution Provider) destination.
 
@@ -59,7 +58,7 @@ The following arguments are supported:
 
 - `location` - (Required) The on-ramp location.
 
-## Attributes Reference
+## Attribute Reference
 
 In addition to all arguments above, the following attributes are exported:
 

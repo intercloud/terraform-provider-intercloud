@@ -1,12 +1,11 @@
 ---
-subcategory: 'GROUP'
+subcategory: 'Group'
 layout: 'intercloud'
-page_title: 'InterCloud: intercloud_group'
 description: |-
   Creates and manages a group
 ---
 
-# Resource: intercloud_group
+# intercloud_group Resource
 
 Manages a group used to regroup resources like `intercloud_connector`
 
@@ -29,7 +28,7 @@ The following arguments are supported:
 
 - `organization_id` - (Optional) The organization id.
 
-## Attributes Reference
+## Attribute Reference
 
 In addition to all arguments above, the following attributes are exported:
 

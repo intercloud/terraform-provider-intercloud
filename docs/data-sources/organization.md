@@ -1,12 +1,11 @@
 ---
-subcategory: 'ORGANIZATION'
+subcategory: 'Organization'
 layout: 'intercloud'
-page_title: 'InterCloud: intercloud_organization'
 description: |-
   Provides details about a specific organization
 ---
 
-# Data Source: intercloud_organization
+# intercloud_organization Data Source
 
 Provide detail about a specific organization.
 
@@ -36,7 +35,7 @@ The following arguments are supported:
 
 - `organization_id` - (Required) The organization ID.
 
-## Attributes Reference
+## Attribute Reference
 
 In addition to all arguments above, the following attributes are exported:
 
