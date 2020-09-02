@@ -35,7 +35,7 @@ Unzip and move the binary in :
 
 ## Using the provider from source
 
-### Terraform 0.12.*
+### Terraform 0.12
 
 ```sh
 make release-snapshot
@@ -73,7 +73,7 @@ The provider can also be moved to one of those directories:
 | Windows           | %APPDATA%\terraform.d\plugins   |
 | All other systems | ~/.terraform.d/plugins          |
 
-### Terraform 0.13.*
+### Terraform 0.13
 
 - Coming soon
 
