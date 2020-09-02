@@ -1,12 +1,11 @@
 ---
-subcategory: 'ORGANIZATION'
+subcategory: 'Organization'
 layout: 'intercloud'
-page_title: 'InterCloud: intercloud_organizations'
 description: |-
   Provides a list of children organizations
 ---
 
-# Data Source: intercloud_organizations
+# intercloud_organizations Data Source
 
 Provide access to children organizations.
 
@@ -22,7 +21,7 @@ data "intercloud_organizations" "children" {
 }
 ```
 
-## Attributes Reference
+## Attribute Reference
 
 The following attributes are exported:
 

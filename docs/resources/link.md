@@ -1,12 +1,11 @@
 ---
-subcategory: 'LINK'
+subcategory: 'Link'
 layout: 'intercloud'
-page_title: 'InterCloud: intercloud_link'
 description: |-
   Creates and manages a link
 ---
 
-# Resource: intercloud_link
+# intercloud_link Resource
 
 Manages a link between two `intercloud_connector`
 
@@ -35,7 +34,7 @@ The following arguments are supported:
 
 - `organization_id` - (Optional) The organization ID.
 
-## Attributes Reference
+## Attribute Reference
 
 In addition to all arguments above, the following attributes are exported:
 

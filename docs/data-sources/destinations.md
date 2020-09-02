@@ -1,12 +1,11 @@
 ---
-subcategory: 'CONNECTOR'
+subcategory: 'Connector'
 layout: 'intercloud'
-page_title: 'InterCloud: intercloud_destinations'
 description: |-
   List InterCloud destinations
 ---
 
-# Data Source: intercloud_destinations
+# intercloud_destinations Data Source
 
 List InterCloud CSP (Cloud Solution Provider) destinations matching criteria.
 
@@ -53,7 +52,7 @@ The following arguments are supported:
 
 - `family` - (Required) The cloud provider family ( `aws`, `awshostedconnection`, `azure` or `gcp`).
 
-## Attributes Reference
+## Attribute Reference
 
 The following attributes are exported:
 

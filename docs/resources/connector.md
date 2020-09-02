@@ -1,12 +1,11 @@
 ---
-subcategory: 'CONNECTOR'
+subcategory: 'Connector'
 layout: 'intercloud'
-page_title: 'InterCloud: intercloud_connector'
 description: |-
   Creates and manages a connector
 ---
 
-# Resource: intercloud_connector
+# intercloud_connector Resource
 
 Manages a connector
 
@@ -122,7 +121,7 @@ When managing Google Cloud connector the following arguments are supported :
   - `bandwith` - (Optional) The allocated bandwith (only one available value
   for now: `BPS_50M`)
 
-## Attributes Reference
+## Attribute Reference
 
 In addition to all arguments above, the following attributes are exported:
 
