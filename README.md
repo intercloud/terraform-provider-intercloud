@@ -75,7 +75,7 @@ The provider can also be moved to one of those directories:
 
 ### Terraform 0.13
 
-- Coming soon
+- *Coming soon*
 
 ------------------------------
 
@@ -99,4 +99,4 @@ $ $GOPATH/bin/terraform-provider-intercloud
 
 Some terraform 0.12 projects are available at [./examples/terraform0.12](?/../examples/terraform0.12)
 
-Examples with terraform 0.13 are coming soon.
+*Examples with terraform 0.13 are coming soon.*
