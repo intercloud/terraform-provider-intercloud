@@ -22,6 +22,10 @@ Go to [releases download page](https://github.com/intercloud/terraform-provider-
 
 Download the right archive from the assets depending on your OS and Arch
 
+:warning: Under MacOS Catalina, errors can appear. Please see this Github issue for more informations and solutions: [macOS Catalina error](https://github.com/hashicorp/terraform/issues/23033)
+
+### Terraform 0.12 installation
+
 Unzip and move the binary in :
 
 | OS                | Location                        |
@@ -29,7 +33,9 @@ Unzip and move the binary in :
 | Windows           | %APPDATA%\terraform.d\plugins   |
 | All other systems | ~/.terraform.d/plugins          |
 
-:warning: Terraform 0.13 use `source` to make the path to the binary
+### Terraform 0.13 installation
+
+Terraform 0.13 uses `source` to make the path to the binary
 
 ------------------------------
 
