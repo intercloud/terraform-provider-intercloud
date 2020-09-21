@@ -17,9 +17,24 @@ Use the navigation to the left to read about the available resources.
 ```hcl
 # Configure the InterCloud Provider
 provider "intercloud" {
-  version = "~> 0.0.1"
+  version         = "~> 0.0.1"
+  organization_id = "6cead98e-98a4-430b-b924-499ea5638f04"
 }
 ```
+
+## Organization
+
+You must provide the ID of the organization containing the managed resources.
+
+Usage:
+
+```hcl
+provider "intercloud" {
+  organization_id = "6cead98e-98a4-430b-b924-499ea5638f04"
+}
+```
+
+Your organization ID can be found with via the [REST API endpoint "/me/info"](https://doc.intercloud.io/apiref/#operation/getMe)
 
 ## Authentication
 
@@ -128,6 +143,8 @@ terraform plan
 In addition to [generic `provider` arguments](https://www.terraform.io/docs/configuration/providers.html)
 (e.g. `alias` and `version`), the following arguments are supported in the InterCloud
 `provider` block:
+
+- `organization_id` - (Required) Organization where resources are managed.
 
 - `access_token` - (Optional) This is the InterCloud personal access token. It
   must be provided, but it can also be sourced from the `INTERCLOUD_ACCESS_TOKEN`
