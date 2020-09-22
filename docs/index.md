@@ -25,6 +25,17 @@ provider "intercloud" {
 ## Organization
 
 You must provide the ID of the organization containing the managed resources.
+The organization ID can be configured via an environment variable or in the provider configuration.
+The reading order is:
+
+- Static organization ID specified in provider configuration
+- Environment variable
+
+Your organization ID can be found with via the [REST API endpoint "/me/info"](https://doc.intercloud.io/apiref/#operation/getMe)
+
+### Static organization ID
+
+You can define the `organization_id` field into the provider configuration.
 
 Usage:
 
@@ -34,7 +45,16 @@ provider "intercloud" {
 }
 ```
 
-Your organization ID can be found with via the [REST API endpoint "/me/info"](https://doc.intercloud.io/apiref/#operation/getMe)
+### Environment variable organization ID
+
+You can define the `INTERCLOUD_ORGANIZATION_ID` environment variable.
+
+Usage:
+
+```shell
+export INTERCLOUD_ORGANIZATION_ID="6cead98e-98a4-430b-b924-499ea5638f04"
+terraform plan
+```
 
 ## Authentication
 
@@ -144,7 +164,9 @@ In addition to [generic `provider` arguments](https://www.terraform.io/docs/conf
 (e.g. `alias` and `version`), the following arguments are supported in the InterCloud
 `provider` block:
 
-- `organization_id` - (Required) Organization where resources are managed.
+- `organization_id` - (Optional) Organization where resources are managed. It
+  must be provided, but it can also be sourced from the `INTERCLOUD_ORGANIZATION_ID`
+  environment variable.
 
 - `access_token` - (Optional) This is the InterCloud personal access token. It
   must be provided, but it can also be sourced from the `INTERCLOUD_ACCESS_TOKEN`

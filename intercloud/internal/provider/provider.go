@@ -87,6 +87,7 @@ func intercloudProvider() terraform.ResourceProvider {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
+				DefaultFunc:  schema.EnvDefaultFunc("INTERCLOUD_ORGANIZATION_ID", nil),
 				Description:  descriptions["organization_id"],
 				ValidateFunc: validation.IsUUID,
 			},
@@ -217,10 +218,10 @@ var descriptions map[string]string
 
 func init() {
 	descriptions = map[string]string{
-		"api_endpoint":            "@TODO Desc. api_endpoint",
-		"access_token":            "@TODO Desc. access_token",
-		"shared_credentials_file": "@TODO Desc. shared_credentials_file",
-		"organization_id":         "@TODO Desc. organization_id",
+		"api_endpoint":            "Customizable REST API endpoint",
+		"access_token":            "Your access token to authenticate the REST API calls",
+		"shared_credentials_file": "File containing your InterCloud credentials",
+		"organization_id":         "Organization ID of the managed resources",
 	}
 }
 
