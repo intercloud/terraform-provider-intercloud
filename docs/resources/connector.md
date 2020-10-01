@@ -51,7 +51,7 @@ resource "intercloud_connector" "azure_connector_1" {
   name = "My AZURE connector #1"
   description = "A sample AZURE connector named #1"
   destination_id = data.intercloud_destination.azure_1.id
-  group_id = intercloud_resource_group.my_group_1.id
+  group_id = intercloud_group.my_group_1.id
   azure {
     service_key = azurerm_express_route_circuit.my_route.service_key
   }
@@ -65,7 +65,7 @@ resource "intercloud_connector" "gcp_connector_1" {
   name = "My AZURE connector #1"
   description = "A sample AZURE connector named #1"
   destination_id = data.intercloud_destination.azure_1.id
-  group_id = intercloud_resource_group.my_group_1.id
+  group_id = intercloud_group.my_group_1.id
   gcp {
     med = 1
     bandwidth = "BPS_50M"
