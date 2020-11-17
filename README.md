@@ -16,15 +16,13 @@ This provider plugin is maintained by the InterCloud team at [InterCloud](https:
 
 ------------------------------
 
-## Using the provider from releases binaries
+### Terraform 0.12 installation
 
 Go to [releases download page](https://github.com/intercloud/terraform-provider-intercloud/releases)
 
 Download the right archive from the assets depending on your OS and Arch
 
 :warning: Under MacOS Catalina, errors can appear. Please see this Github issue for more informations and solutions: [macOS Catalina error](https://github.com/hashicorp/terraform/issues/23033)
-
-### Terraform 0.12 installation
 
 Unzip and move the binary in :
 
@@ -35,7 +33,7 @@ Unzip and move the binary in :
 
 ### Terraform 0.13 installation
 
-Terraform 0.13 uses `source` to make the path to the binary
+Full instructions can be found on [Terraform website](https://registry.terraform.io/providers/intercloud/intercloud/latest)
 
 ------------------------------
 
@@ -81,7 +79,14 @@ The provider can also be moved to one of those directories:
 
 ### Terraform 0.13
 
-- *Coming soon*
+As for `Terraform 0.12`, but provider binary must be moved to:
+
+| OS                | Location                        |
+|-------------------|:--------------------------------|
+| Windows           | %APPDATA%\terraform.d\plugins   |
+| All other systems | ~/.terraform.d/plugins          |
+
+See [Terraform website](https://www.terraform.io/docs/extend/how-terraform-works.html#plugin-locations)
 
 ------------------------------
 
