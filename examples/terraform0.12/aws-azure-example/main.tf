@@ -17,7 +17,7 @@ terraform {
 # aws, azure, google modules
 # ------------------------------------------------
 module "ic_aws" {
-  source = "../modules/aws"
+  source = "../../modules/aws"
   providers = {
     aws = aws.ic
   }
@@ -27,7 +27,7 @@ module "ic_aws" {
 }
 
 module "ic_azure" {
-  source = "../modules/azure"
+  source = "../../modules/azure"
   providers = {
     azurerm = azurerm.ic
   }

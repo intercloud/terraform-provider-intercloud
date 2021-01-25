@@ -27,7 +27,7 @@ terraform {
 # aws, azure, google modules
 # ------------------------------------------------
 module "ic_aws" {
-  source = "../modules/aws"
+  source = "../../modules/aws"
   providers = {
     aws = aws.ic
   }
@@ -37,7 +37,7 @@ module "ic_aws" {
 }
 
 module "ic_azure" {
-  source = "../modules/azure"
+  source = "../../modules/azure"
   providers = {
     azurerm = azurerm.ic
   }
@@ -69,12 +69,12 @@ data "intercloud_destinations" "dest_azure" {
 
 
 data "intercloud_destination" "aws_destination" {
-  location = "London"
+  location = "digital reality sovereign house london (eu-west-1)"
   family   = "aws"
 }
 
 data "intercloud_destination" "azure_destination" {
-  location = "London"
+  location = "equinix ld5 london"
   family   = "azure"
 }
 
