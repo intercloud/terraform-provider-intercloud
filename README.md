@@ -11,12 +11,50 @@ This provider plugin is maintained by the InterCloud team at [InterCloud](https:
 
 ## Requirements
 
-- [Terraform](https://www.terraform.io/downloads.html) 0.12+
+- [Terraform](https://www.terraform.io/downloads.html) 0.13+
 - [Go](https://golang.org/doc/install) 1.14 (to build the provider plugin)
 
 ------------------------------
 
-### Terraform 0.12 installation
+## Using the provider
+
+See the [InterCloud Provider documentation](https://registry.terraform.io/providers/intercloud/intercloud/latest/docs) to get started using the InterCloud provider
+
+## Upgrading the provider
+
+The provider does not upgrade automatically, you need to run the following command to force the upgrade after a new release:
+
+```sh
+terraform init -upgrade
+```
+
+For more details on upgrade and version constraint, see the [Official Terraform documentation](https://www.terraform.io/docs/language/providers/configuration.html#provider-versions)
+
+------------------------------
+
+## Building the provider
+
+If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.14+ is *required*).
+You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
+
+To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+
+```sh
+$ make build
+...
+$ $GOPATH/bin/terraform-provider-intercloud
+...
+```
+
+------------------------------
+
+## Examples
+
+Terraform 0.13+ examples available at [./examples/terraform0.13](?/../examples/terraform0.13)
+
+## Terraform older versions (>=0.12 and <0.13)
+
+### Installation
 
 Go to [releases download page](https://github.com/intercloud/terraform-provider-intercloud/releases)
 
@@ -31,15 +69,7 @@ Unzip and move the binary in :
 | Windows           | %APPDATA%\terraform.d\plugins   |
 | All other systems | ~/.terraform.d/plugins          |
 
-### Terraform 0.13 installation
-
-Full instructions can be found on [Terraform website](https://registry.terraform.io/providers/intercloud/intercloud/latest)
-
-------------------------------
-
-## Using the provider from source
-
-### Terraform 0.12
+### Using provider from source
 
 ```sh
 make release-snapshot
@@ -77,37 +107,6 @@ The provider can also be moved to one of those directories:
 | Windows           | %APPDATA%\terraform.d\plugins   |
 | All other systems | ~/.terraform.d/plugins          |
 
-### Terraform 0.13
+### Terraform 0.12 examples
 
-As for `Terraform 0.12`, but provider binary must be moved to:
-
-| OS                | Location                        |
-|-------------------|:--------------------------------|
-| Windows           | %APPDATA%\terraform.d\plugins   |
-| All other systems | ~/.terraform.d/plugins          |
-
-See [Terraform website](https://www.terraform.io/docs/extend/how-terraform-works.html#plugin-locations)
-
-------------------------------
-
-## Building the Provider
-
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.14+ is *required*).
-You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
-
-To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
-
-```sh
-$ make build
-...
-$ $GOPATH/bin/terraform-provider-intercloud
-...
-```
-
-------------------------------
-
-## Examples
-
-Some terraform 0.12 projects are available at [./examples/terraform0.12](?/../examples/terraform0.12)
-
-*Examples with terraform 0.13 are coming soon.*
+Terraform 0.12+ (< 0.13) examples available at [./examples/terraform0.12](?/../examples/terraform0.12)

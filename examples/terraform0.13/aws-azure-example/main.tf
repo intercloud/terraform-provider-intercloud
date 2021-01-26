@@ -2,14 +2,24 @@
 # terraform configuration
 # ------------------------------------------------
 terraform {
-  required_version = ">= 0.12.0, <0.13.0"
+  required_version = ">= 0.13.0"
   required_providers {
-    # Build has to be named terraform-provider-intercloud_v0.0.0
-    #intercloud = "1.1.0-SNAPSHOT-856ce91"
-    tls     = "~> 2.1"
-    aws     = "~> 2.58"
-    random  = "~> 2.2"
-    azurerm = "~> 2.6"
+    intercloud = {
+      source  = "intercloud/intercloud"
+      version = "1.1.0"
+    }
+    tls = {
+      version = "~> 2.1"
+    }
+    aws = {
+      version = "~> 2.58"
+    }
+    random = {
+      version = "~> 2.2"
+    }
+    azurerm = {
+      version = "~> 2.6"
+    }
   }
 }
 
@@ -59,7 +69,7 @@ data "intercloud_destinations" "dest_azure" {
 
 
 data "intercloud_destination" "aws_destination" {
-  location = "telehouse tsh london"
+  location = "digital reality sovereign house london (eu-west-1)"
   family   = "aws"
 }
 
